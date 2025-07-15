@@ -1,0 +1,90 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>ClickToShop - Footer</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+
+    footer h5 {
+      color: #f8f9fa;
+      margin-bottom: 15px;
+    }
+    footer ul {
+      list-style: none;
+      padding: 0;
+    }
+    footer ul li {
+      color: #adb5bd;
+      margin-bottom: 8px;
+    }
+    footer p {
+      color: #adb5bd;
+    }
+    .ftr{
+        font-size: 18px;
+    }
+    p,h5:hover{
+        color:orange;
+    }
+    li:hover{
+        color: orange;
+    }
+    .uppercase{
+        text-transform: uppercase;
+
+    }
+    
+  </style>
+</head>
+<body>
+
+<!-- Footer Start -->
+<footer class="bg-dark text-white py-5 mt-5 ftr">
+  <div class="container">
+    <div class="row">
+      <h5 class="uppercase">About</h5>
+      <div class="col-md-4 mb-4">
+        <a class="navbar-brand d-flex align-items-center" href="/" style="color: orange;">
+        <img src="{% static 'store/logo.png' %}" alt="Logo" height="50" class="me-2" />
+        ClickToShop
+        </a>        
+        <p>
+          ClickToShop is an eCommerce platform for groceries that provides all the daily-use items you need. We deliver directly from the company to your doorstep in just one click.
+        </p>
+      </div>
+
+      <!-- Useful Links -->
+      <div class="col-md-4 mb-4">
+        <h5 class="uppercase">ClickToShop</h5>
+        <ul>
+          <li>Terms & Conditions</li>
+          <li>Recent Deals</li>
+          <li>Top Products</li>
+        </ul>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="col-md-4 mb-4">
+        <h5 class="uppercase">Contact Us</h5>
+        <ul>
+          <li><i class="fa fa-phone me-2"></i> Customer Care</li>
+          <li><i class="fa fa-facebook-official me-2"></i> Facebook</li>
+          <li><i class="fa fa-instagram me-2"></i> Instagram</li>
+          <li><i class="fa fa-envelope me-2"></i>E-Mail</li>
+        </ul>
+      </div>
+    </div>
+    <hr class="border-light" />
+    <div class="text-center small text-muted">
+      &copy; 2025 ClickToShop. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

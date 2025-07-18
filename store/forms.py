@@ -1,13 +1,13 @@
-# accounts/forms.py
+# store/forms.py
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import CustomUser
+from .models import CustomeUSer
 
 class SignupForm(UserCreationForm):
-    address = forms.CharField(max_length=255, required=True)
-    contact = forms.CharField(max_length=20, required=True)
     email = forms.EmailField(required=True)
+    contact = forms.CharField(max_length=15)
+    address = forms.CharField(max_length=255)
 
     class Meta:
-        model = CustomUser
+        model = CustomeUSer
         fields = ['username', 'email', 'contact', 'address', 'password1', 'password2']

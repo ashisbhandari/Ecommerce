@@ -81,8 +81,10 @@ WSGI_APPLICATION = 'Ecomm.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'djongo',
+        'NAME': 'ClickToShop',
+        'HOST': 'localhost',
+        'PORT': 27017,
     }
 }
 

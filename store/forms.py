@@ -1,13 +1,28 @@
 # store/forms.py
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import CustomeUSer
+from .models import CustomUser
 
 class SignupForm(UserCreationForm):
     email = forms.EmailField(required=True)
-    contact = forms.CharField(max_length=15)
-    address = forms.CharField(max_length=255)
+    contact = forms.CharField(max_length=15, required=True)
+    address = forms.CharField(max_length=255, required=True)
 
     class Meta:
-        model = CustomeUSer
-        fields = ['username', 'email', 'contact', 'address', 'password1', 'password2']
+        model = CustomUser
+        fields = ('username', 'email', 'contact', 'address', 'password1', 'password2')
+
+    # password1 and password2 are built-in fields in UserCreationForm (password and confirm password)
+
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        if CustomUser.objects.filter(email=email).exists():
+            raise forms.ValidationError("Email already registered.")
+        return email
+    
+# forms.py
+from django import forms
+
+class LoginForm(forms.Form):
+    username = forms.CharField(max_length=150)
+    password = forms.CharField(widget=forms.PasswordInput)

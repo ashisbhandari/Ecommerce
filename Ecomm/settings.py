@@ -55,7 +55,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'Ecomm.urls'
-AUTH_USER_MODEL = 'store.CustomeUSer'
+AUTH_USER_MODEL = 'store.CustomUser'
 
 
 TEMPLATES = [

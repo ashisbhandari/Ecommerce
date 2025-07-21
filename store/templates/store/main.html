@@ -127,7 +127,16 @@
     valueSpan.innerText = currentValue;
   }
 </script>
-<style>
+
+
+
+
+
+
+  <!-- Login Modal -->
+  <div class="overlay" id="loginOverlay">
+    <div class="login-container">
+      <style>
   #toast-messages {
     position: fixed;
     top: 20px;
@@ -168,20 +177,11 @@
   }, 5000);
 </script>
 
-
-
-
-
-
-  <!-- Login Modal -->
-  <div class="overlay" id="loginOverlay">
-    <div class="login-container">
       <button class="close-btn" onclick="closeLogin()">×</button>
       <h1 class="text-center">Login Page</h1>
       <form method="post" action="{% url 'index' %}">
         {% csrf_token %}
-        
-  <input type="hidden" name="form_type" value="login" />
+        <input type="hidden" name="form_type" value="login" />
         <div class="mb-3">
           <label for="login_username" class="form-label">Username</label>
           <input type="text" class="form-control" id="login_username" name="username" required />
@@ -206,10 +206,52 @@
   <!-- Signup Modal -->
   <div class="overlay" id="signupOverlay">
     <div class="login-container">
+      <style>
+  #toast-messages {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+  }
+
+  .alert {
+    min-width: 250px;
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+  }
+
+  .fade-out {
+    opacity: 0;
+  }
+</style>
+
+<div id="toast-messages">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+</div>
+
+<script>
+  // Auto-hide alerts after 5 seconds
+  setTimeout(function () {
+    const alerts = document.querySelectorAll('#toast-messages .alert');
+    alerts.forEach(function (alert) {
+      alert.classList.add('fade-out');
+      setTimeout(() => alert.remove(), 500); // remove after fade
+    });
+  }, 5000);
+</script>
+
       <button class="close-btn" onclick="closeSignup()">×</button>
       <h1 class="text-center">Sign Up</h1>
       <form method="post" action="{% url 'index' %}">
         {% csrf_token %}
+        <input type="hidden" name="form_type" value="signup" />
         <div>
           <label for="signup_username" class="form-label">Username</label>
           <input type="text" class="form-control" id="signup_username" name="username" required />

@@ -55,7 +55,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'Ecomm.urls'
-AUTH_USER_MODEL = 'store.CustomUser'
+# AUTH_USER_MODEL = 'store.CustomUser'
+
 
 
 TEMPLATES = [
@@ -86,6 +87,34 @@ DATABASES = {
         'HOST': 'localhost',
         'PORT': 27017,
     }
+}
+import os
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+STATIC_URL = '/static/'
+STATICFILES_DIRS = [BASE_DIR / 'static']
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
+
+
+
+LOGGING = {
+    'version': 1,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'django.db.backends': {
+            'level': 'DEBUG',
+            'handlers': ['console'],
+        },
+    },
 }
 
 
@@ -123,7 +152,6 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

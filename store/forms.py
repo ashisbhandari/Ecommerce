@@ -1,7 +1,7 @@
 # store/forms.py
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import CustomUser
+from .models import CustomUser,Product
 
 class SignupForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -26,3 +26,9 @@ from django import forms
 class LoginForm(forms.Form):
     username = forms.CharField(max_length=150)
     password = forms.CharField(widget=forms.PasswordInput)
+
+# product add garne forms
+class AddProductForm(forms.ModelForm):
+    class Meta:
+        model = Product
+        fields = ['name', 'price', 'description', 'category', 'quantity', 'product_status', 'image']

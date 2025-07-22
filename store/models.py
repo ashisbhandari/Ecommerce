@@ -34,3 +34,37 @@ class CustomUser(AbstractBaseUser):
         return self.username
 
     # Required permissions methods here...
+import os
+from django.db import models
+
+def upload_to(instance, filename):
+    ext = filename.split('.')[-1]
+    if not instance.pk:
+        return f'product_images/temp.{ext}'
+    return f'product_images/product_{instance.pk}.{ext}'
+
+class Product(models.Model):
+    name = models.CharField(max_length=15)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    description = models.TextField()
+    category = models.CharField(max_length=50)
+    quantity = models.IntegerField()
+    product_status = models.CharField(max_length=150, blank=True, null=True)
+    image = models.ImageField(upload_to='product_images/', blank=True, null=False)
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.pk:
+            # Step 1: Temporarily remove image and save to get pk
+            image = self.image
+            self.image = None
+            super().save(*args, **kwargs)
+
+            # Step 2: Restore image and save again, clear flags
+            self.image = image
+            kwargs.pop("force_insert", None)
+            kwargs.pop("force_update", None)
+
+        super().save(*args, **kwargs)

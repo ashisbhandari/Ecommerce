@@ -4,6 +4,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="{% static 'store/logo.png' %}" type="image/x-icon" width="100px">
   <title>ClickToShop</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
@@ -89,21 +90,262 @@
     }
   </style>
 </head>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center" href="/" style="color: orange;">
+      <img src="{% static 'store/logo.png' %}" alt="Logo" height="50" class="me-2" />
+      ClickToShop
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+      aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+
+        <li class="nav-item me-lg-3">
+            <form class="d-flex" role="search">
+              <div class="input-group">
+                <input class="form-control text-white" type="search" placeholder="Search" aria-label="Search"
+                  style="background-color: #949393; height: 50px;" />
+                <button class="btn btn-outline-light" style="background-color: #949393; height: 50px;" type="submit">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </form>
+          </li>
+
+
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="#">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Recent Deals</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Help & Support</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Contact Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-warning" href="javascript:void(0);" onclick="openLogin()">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-light " href="/">← Back to Home</a>
+        </li>
+
+
+      </ul>
+    </div>
+  </div>
+</nav>
 
 <body>
+    
+    
+    <style>
+    body {
+      background: url('{% static "images/bg.jpg" %}') center/cover no-repeat fixed;
+      color: white;
+    }
+    .card {
+      background: linear-gradient(to right, #3a3a3a, #4a4a4a);
+      border: none;
+      padding: 24px;
+    }
+  .image-wrapper {
+  overflow: hidden; /* match image border radius */
+  max-height: 320px;
+}
+
+.product-image {
+  width: 100%;
+  max-height: 400px;
+  object-fit: contain;
+  transition: transform 0.3s ease, opacity 0.3s ease, filter 0.3s ease;
+}
+
+.product-image:hover {
+  transform: scale(1.52);
+  cursor: pointer;
+}
+
+
+    
+    .btn-custom {
+      padding: 8px 20px;
+      font-weight: 600;
+      font-size: 15px;
+      border-radius: 6px;
+      margin-right: 8px;
+      transition: 0.3s ease;
+    }
+    .btn-cart {
+      background-color: #ffc107;
+      color: #212529;
+    }
+    .btn-cart:hover {
+      background-color: #e0a800;
+      color: #fff;
+    }
+    .btn-buy {
+      background-color: #28a745;
+      color: white;
+    }
+    .btn-buy:hover {
+      background-color: #218838;
+    }
+    .text-border {
+  border: 1px solid greenyellow;
+  padding: 2px 6px;
+  border-radius: 5px;
+  display: inline-block;
+
+}
+
+  </style>
+<div class="container py-4 ">
+  <div class="row justify-content-center">
+    <div class="col-lg-10">
+      <div class="card shadow-lg text-white">
+        <div class="row g-4">
+          
+          <!-- LEFT: Product Image (centered) -->
+          <div class="col-md-4 d-flex align-items-center justify-content-center">
+            <div class="image-wrapper">
+              {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+              {% else %}
+                <img src="{% static 'default.jpg' %}" alt="No image" class="product-image">
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- MIDDLE: Main Product Info -->
+          <div class="col-md-5">
+            <h3 class="fw-bold">{{ product.name }}</h3>
+            <h5 class="text-warning mb-3">Rs. {{ product.price }}</h5>
+
+            <p><strong>Description:</strong><br>{{ product.description }}</p>
+
+           
+
+            <!-- Quantity control -->
+            <div class="mb-3 quantity-box">
+              <button class="btn btn-info" type="button" onclick="changeQuantity(this, -1)">-</button>
+              <span class="quantity-value">1</span>
+              <button class="btn btn-info" type="button" onclick="changeQuantity(this, 1)">+</button>
+            </div>
+
+            <!-- Buttons -->
+            <div class="mb-3">
+                <a href="#" class="btn btn-cart btn-custom me-2">Add to Cart</a>
+                {% if product.quantity > 0 and product.product_status != "Discontinued" %}
+                <a href="#" class="btn btn-buy btn-custom">Buy Now</a>
+                {% elif product.product_status == "Discontinued" %}
+                <a href="#" class="btn btn-danger btn-custom disabled">Discontinued</a>
+                {% elif product.quantity == 0 %}
+                <a href="#" class="btn btn-danger btn-custom disabled">Out of Stock</a>
+                {% endif %}
+
+            </div>
+          </div>
+
+          <!-- RIGHT: Availability + Share -->
+          <div class="col-md-3 d-flex flex-column justify-content-between">
+            <div>
+
+            <div class="mt-3">
+                <p style="width: fit-content;" class="mb-1">
+                    <strong>Available:</strong>
+                    {% if product.quantity > 0 and product.product_status != "Discontinued" %}
+                    <span class="text-white text-border">{{ product.quantity }} unit {{ product.product_status }}</span>
+                    {% elif product.product_status == "Discontinued" %}
+                    <span class="text-danger fw-bold">Discontinued</span>
+                    {% elif product.quantity == 0 %}
+                    <span class="text-danger fw-bold">Out of Stock</span>
+                    {% endif %}
+                </p>
+            </div>
+
+
+               {% if product.category %}
+              <p><strong>Category:</strong> {{ product.category }}</p>
+            {% endif %}
+            <p><strong>Status:</strong> {{ product.product_status }}</p>
+            </div>
+
+            <div class="share-buttons mt-4">
+                <h6 class="text-warning">Share this product:</h6>
+                <a href="#" class="btn btn-light btn-sm" onclick="shareOnFacebook(event)"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="btn btn-light btn-sm" onclick="shareOnTwitter(event)"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="btn btn-light btn-sm" onclick="shareOnInstagram(event)"><i class="fab fa-instagram"></i></a>
+            </div>
+            <script>
+    function getCurrentUrl() {
+        return window.location.href;
+    }
+
+    function shareOnFacebook(e) {
+        e.preventDefault();
+        const url = encodeURIComponent(getCurrentUrl());
+        navigator.clipboard.writeText(getCurrentUrl()).then(() => {
+            alert("URL copied to clipboard! You can share it on Facebook.");
+            const confirmed = confirm("Do you want to share this on Facebook?");
+            if (confirmed) {
+                window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+            }
+        });
+    }
+
+    function shareOnTwitter(e) {
+        e.preventDefault();
+        const url = encodeURIComponent(getCurrentUrl());
+        const text = encodeURIComponent("Check out this product!");
+        navigator.clipboard.writeText(getCurrentUrl()).then(() => {
+            alert("URL copied to clipboard! You can share it on Twitter.");
+            const confirmed = confirm(" Do you want to share this on Twitter?");
+            if (confirmed) {
+                window.open(`https://twitter.com/intent/tweet?url=${url}&text=${text}`, '_blank');
+            }
+        });
+    }
+
+    function shareOnInstagram(e) {
+        e.preventDefault();
+        navigator.clipboard.writeText(getCurrentUrl()).then(() => {
+            alert("URL copied to clipboard! You can share it on Instagram.");
+            alert("Instagram does not support direct sharing. URL copied to clipboard. You can paste it manually.");
+        });
+    }
+</script>
+
+
+
+          </div>
+
+        </div>
+      </div>
+  </div>
+</div>
+
+<script>
+  function changeQuantity(btn, delta) {
+    const container = btn.closest(".quantity-box");
+    const span = container.querySelector(".quantity-value");
+    let current = parseInt(span.textContent);
+    current = isNaN(current) ? 1 : current + delta;
+    if (current < 1) current = 1;
+    span.textContent = current;
+  }
+</script>
   <div class="container py-4">
+    <h2 class="text-center mb-4 text-black">Related Products</h2>
   <div class="row g-3">
     {% for product in products %}
     <div class="col-lg-3 col-sm-4 col-6">
-      <!-- <div class="card text-white h-100" 
-     style="background-image: url('{% if product.image %}{{ product.image.url }}{% else %}{% static 'logo.png' %}{% endif %}'); 
-            background-size: cover; background-position: center; background-repeat: no-repeat;">
-  
-  {% if product.image %}
-    <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="opacity: 0;" height="200px">
-  {% else %}
-    <img src="{% static 'default.jpg' %}" class="card-img-top" alt="No image" style="opacity: 0;" height="200px">
-  {% endif %} -->
       <div class="card text-white h-70 product-card" data-product-id="{{ product.id }}" style="cursor: pointer;">
         {% if product.image %}
           <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" height="300px">
@@ -115,46 +357,10 @@
            <h5 class="card-title mb-1">{{ product.name }}</h5>
           <p class="card-title bg-info text-dark px-2 py-1 rounded" style="width: fit-content;">RS {{ product.price }}</p>
           </div>
-          <!-- <div class="mb-3 d-flex align-items-center gap-2">
-            <p class="card-price">RS {{ product.price }}</p>
-            <button class="btn btn-info" type="button" onclick="changeQuantity(this, -1)">-</button>
-            <span class="quantity-value">1</span>
-            <button class="btn btn-info" type="button" onclick="changeQuantity(this, 1)">+</button>
-          </div>
-          <div class="mt-auto d-flex justify-content-between gap-2">
-            <button class="btn btn-success flex-fill" style="height: 40px; width:auto">Add to Cart</button>
-            <button class="btn btn-primary flex-fill" style="height: 40px; width:auto">Buy Now</button>
-          </div> -->
         </div>
       </div>
     </div>
     {% endfor %}
-     <!-- {% for product in products %}
-        <div class="col-lg-3 col-md-4 col-sm-6 col-12">
-          <div class="card text-dark h-100">
-            {% if product.image %}
-              <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}">
-            {% else %}
-              <img src="{% static 'default.jpg' %}" class="card-img-top" alt="No image available">
-            {% endif %}
-            <div class="card-body">
-              <h5 class="card-title">{{ product.name }}</h5>
-              <p class="card-text">{{ product.description|truncatechars:60 }}</p>
-              <p class="text-muted fw-bold">Rs. {{ product.price }}</p>
-              <p class="text-secondary">Category: {{ product.category }}</p>
-              <p class="text-success">In Stock: {{ product.quantity }}</p>
-              {% if product.product_status %}
-                <p class="text-danger">{{ product.product_status }}</p>
-              {% endif %}
-              <a href="#" class="btn btn-primary btn-sm">Add to Cart</a>
-            </div>
-          </div>
-        </div>
-      {% empty %}
-        <div class="col-12 text-center">
-          <p>No products available at the moment.</p>
-        </div>
-      {% endfor %} -->
   </div>
 </div>
 <script>
@@ -169,16 +375,6 @@
   });
 </script>
 
-<!-- Quantity Script -->
-<script>
-  function changeQuantity(btn, delta) {
-    const container = btn.closest('.card-body');
-    const valueSpan = container.querySelector('.quantity-value');
-    let currentValue = parseInt(valueSpan.innerText) || 1;
-    currentValue = Math.max(1, currentValue + delta); // prevent negative values
-    valueSpan.innerText = currentValue;
-  }
-</script>
 
 
 
@@ -400,4 +596,46 @@
   </script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+<footer class="bg-dark text-white py-5 mt-5 ftr">
+  <div class="container">
+    <div class="row">
+      <h5 class="uppercase">About</h5>
+      <div class="col-md-4 mb-4">
+        <a class="navbar-brand d-flex align-items-center" href="/" style="color: orange;">
+        <img src="{% static 'store/logo.png' %}" alt="Logo" height="50" class="me-2" />
+        ClickToShop
+        </a>        
+        <p>
+          ClickToShop is an eCommerce platform for groceries that provides all the daily-use items you need. We deliver directly from the company to your doorstep in just one click.
+        </p>
+      </div>
+
+      <!-- Useful Links -->
+      <div class="col-md-4 mb-4">
+        <h5 class="uppercase">ClickToShop</h5>
+        <ul>
+          <li>Terms & Conditions</li>
+          <li>Recent Deals</li>
+          <li>Top Products</li>
+        </ul>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="col-md-4 mb-4">
+        <h5 class="uppercase">Contact Us</h5>
+        <ul>
+          <li><i class="fa fa-phone me-2"></i> Customer Care</li>
+          <li><i class="fa fa-facebook-official me-2"></i> Facebook</li>
+          <li><i class="fa fa-instagram me-2"></i> Instagram</li>
+          <li><i class="fa fa-envelope me-2"></i>E-Mail</li>
+        </ul>
+      </div>
+    </div>
+    <hr class="border-light" />
+    <div class="text-center small text-muted">
+      &copy; 2025 ClickToShop. All rights reserved.
+    </div>
+  </div>
+</footer>
+
 </html>

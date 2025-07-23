@@ -8,4 +8,5 @@ urlpatterns = [
     path('footer/',views.footer,name="Admin Page"),
     # path('ashish/',views.update_stock,name="Admin Page"),
     path('ashish/',views.ashish,name="Admin Page"),
+    path('product/<int:id>/',views.product,name="Admin Page"),
 ]

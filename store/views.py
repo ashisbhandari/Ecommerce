@@ -198,3 +198,8 @@ def ashish(request):
         'products': products,
         'product_json': json.dumps(product_data)
     })
+
+def product(request, id):
+    product = get_object_or_404(Product, id=id)
+    products = Product.objects.exclude(id=id)
+    return render(request, 'store/product.html', {'product': product,'products':products})

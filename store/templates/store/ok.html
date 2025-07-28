@@ -130,6 +130,11 @@
     .fade-out {
       opacity: 0;
     }
+    .card-price {
+      font-size: 1.25rem;
+      font-weight: 500;
+    }
+
   </style>
 </head>
 
@@ -170,6 +175,67 @@
     </div>
   </div>
 </nav>
+
+<div class="container py-4">
+  <div class="row g-3 text-center">
+
+    <!-- Total Sales -->
+    <div class="col-lg-3 col-sm-4 col-6">
+      <div class="card text-white shadow-sm" style="background: linear-gradient(to right, #b06f3a, #6933069c, #b06f3a);">
+        <div class="card-body d-flex flex-column justify-content-center">
+          <h5 class="card-title">Total Sales</h5>
+          <div class="d-flex justify-content-center align-items-center gap-2">
+            <i class="fa fa-shopping-cart fa-2x"></i>
+            <span class="fs-5">Rs: 0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Orders -->
+    <div class="col-lg-3 col-sm-4 col-6">
+      <div class="card text-white shadow-sm" style="background: linear-gradient(to right, #b06f3a, #6933069c, #b06f3a);">
+        <div class="card-body d-flex flex-column justify-content-center">
+          <h5 class="card-title">Total Orders</h5>
+          <div class="d-flex justify-content-center align-items-center gap-2">
+            <i class="fa fa-box fa-2x"></i>
+            <span class="fs-5">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Items -->
+    <div class="col-lg-3 col-sm-4 col-6">
+      <div class="card text-white shadow-sm" style="background: linear-gradient(to right, #b06f3a, #6933069c, #b06f3a);">
+        <div class="card-body d-flex flex-column justify-content-center">
+          <h5 class="card-title">Total Items</h5>
+          <div class="d-flex justify-content-center align-items-center gap-2">
+            <i class="fa fa-triangle-exclamation fa-2x text-danger"></i>
+            <span class="fs-5">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Users -->
+    <div class="col-lg-3 col-sm-4 col-6">
+      <div class="card text-white shadow-sm" style="background: linear-gradient(to right, #b06f3a, #6933069c, #b06f3a);">
+        <div class="card-body d-flex flex-column justify-content-center">
+          <h5 class="card-title">Total Users</h5>
+          <div class="d-flex justify-content-center align-items-center gap-2">
+            <i class="fa fa-users fa-2x"></i>
+            <span class="fs-5">0</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
 
 <!-- Toast Messages -->
 <div id="toast-messages">

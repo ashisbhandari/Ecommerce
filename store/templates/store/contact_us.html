@@ -1,0 +1,336 @@
+{%load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ClickToShop - Contact</title>
+    
+  <link rel="icon" href="{% static 'store/logo.png' %}" type="image/x-icon" width="100px">
+</head>
+<body>
+  <div class="index-content">
+    {%include 'store/navbar.html'%}
+    <div class="container mt-5">
+      <h1>Contact Us</h1>
+      <p>If you have any questions or need assistance, please fill out the form below:</p>
+      <form>
+        <div class="mb-3">
+          <label for="name" class="form-label">Name</label>
+          <input type="text" class="form-control" id="name" placeholder="Your Name" required>
+        </div>
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" placeholder="Your Email" required>
+        </div>
+        <div class="mb-3">
+          <label for="message" class="form-label">Message</label>
+          <textarea class="form-control" id="message" rows="4" placeholder="Your Message" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Send Message</button>
+        </form>
+    </div>
+
+  </div>
+
+
+
+<!-- login  and signup modals started -->
+    <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      background: url('{% static "images/bg.jpg" %}') center/cover no-repeat fixed;
+    }
+
+    .card-price {
+      font-weight: bold;
+      font-size: 1.1rem;
+    }
+
+    .card {
+      background: linear-gradient(to right, #544a42, #666050, #544a42);
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 100%;
+      backdrop-filter: blur(10px);
+      background-color: rgba(0, 0, 0, 0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      z-index: 9999;
+    }
+
+    .overlay.active {
+      display: flex;
+    }
+
+    .login-container {
+      max-width: 400px;
+      width: 100%;
+      background: linear-gradient(to right, #333, #444);
+      border-radius: 10px;
+      padding: 30px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(12px);
+      color: #fff;
+      position: relative;
+    }
+
+    .form-label {
+      font-weight: bold;
+    }
+
+    .btn-primary {
+      width: 100%;
+    }
+
+    .form-control {
+      margin-bottom: 15px;
+    }
+
+    .form-control:focus {
+      border-color: #007bff;
+      box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+      border-color: #0056b3;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      background: transparent;
+      border: none;
+      font-size: 24px;
+      color: #fff;
+      cursor: pointer;
+    }
+  </style>
+
+  <!-- Login Modal -->
+  <div class="overlay" id="loginOverlay">
+    <div class="login-container">
+      <style>
+  #toast-messages {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+  }
+
+  .alert {
+    min-width: 250px;
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+  }
+
+  .fade-out {
+    opacity: 0;
+  }
+</style>
+
+<div id="toast-messages">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+</div>
+
+<script>
+  // Auto-hide alerts after 5 seconds
+  setTimeout(function () {
+    const alerts = document.querySelectorAll('#toast-messages .alert');
+    alerts.forEach(function (alert) {
+      alert.classList.add('fade-out');
+      setTimeout(() => alert.remove(), 500); // remove after fade
+    });
+  }, 5000);
+</script>
+
+      <button class="close-btn" onclick="closeLogin()">×</button>
+      <h3 class="text-center">Login - ClickToShop</h3>
+      <form method="post" action="{% url 'index' %}">
+        {% csrf_token %}
+        <input type="hidden" name="form_type" value="login" />
+        <div class="mb-3">
+          <label for="login_username" class="form-label">Username</label>
+          <input type="text" class="form-control" id="login_username" name="username" required />
+        </div>
+        <div class="mb-3">
+          <label for="login_password" class="form-label">Password</label>
+          <div class="input-group">
+            <input type="password" class="form-control" id="login_password" name="password" required />
+            <button class="btn btn-outline-light" style="background-color: #949393; height: 40px; border-radius:6px;" type="button" onclick="togglePasswordVisibility('login_password', 'loginIcon')">
+              <i class="fa fa-eye" id="loginIcon"></i>
+            </button>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+        <div class="mt-3 text-center text-black">
+          <p>Don't have an account? <a href="#" class="text-warning" onclick="switchToSignup()">Sign Up</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Signup Modal -->
+  <div class="overlay" id="signupOverlay">
+    <div class="login-container">
+      <style>
+  #toast-messages {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+  }
+
+  .alert {
+    min-width: 250px;
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+  }
+
+  .fade-out {
+    opacity: 0;
+  }
+</style>
+
+<div id="toast-messages">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+</div>
+
+<script>
+  // Auto-hide alerts after 5 seconds
+  setTimeout(function () {
+    const alerts = document.querySelectorAll('#toast-messages .alert');
+    alerts.forEach(function (alert) {
+      alert.classList.add('fade-out');
+      setTimeout(() => alert.remove(), 500); // remove after fade
+    });
+  }, 5000);
+</script>
+
+      <button class="close-btn" onclick="closeSignup()">×</button>
+      <h3 class="text-center">Sign Up - ClickToShop</h3>
+      <form method="post" action="{% url 'index' %}">
+        {% csrf_token %}
+        <input type="hidden" name="form_type" value="signup" />
+        <div>
+          <label for="signup_username" class="form-label">Username</label>
+          <input type="text" class="form-control" id="signup_username" name="username" required />
+        </div>
+        <div>
+          <label for="email" class="form-label">Email</label>
+          <input type="email" class="form-control" id="email" name="email" required />
+        </div>
+        <div>
+          <label for="contact" class="form-label">Contact Number</label>
+          <input type="tel" class="form-control" id="contact" name="contact" required />
+        </div>
+        <div>
+          <label for="address" class="form-label">Address</label>
+          <input type="text" class="form-control" id="address" name="address" required />
+        </div>
+        <div>
+          <label for="signup_password" class="form-label">Password</label>
+          <div class="input-group">
+            <input type="password" class="form-control" id="signup_password" name="password" required />
+            <button class="btn btn-outline-light" type="button" style="background-color: #949393; height: 40px;" onclick="togglePasswordVisibility('signup_password', 'signupIcon1')">
+              <i class="fa fa-eye" id="signupIcon1"></i>
+            </button>
+          </div>
+        </div>
+        <div>
+          <label for="confirm_signup_password" class="form-label">Confirm Password</label>
+          <div class="input-group">
+            <input type="password" class="form-control" id="confirm_signup_password" name="confirm_password" required />
+            <button class="btn btn-outline-light" type="button" style="background-color: #949393; height: 40px; border-radius:6px;" onclick="togglePasswordVisibility('confirm_signup_password', 'signupIcon2')">
+              <i class="fa fa-eye" id="signupIcon2"></i>
+            </button>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary mt-3">Sign Up</button>
+        <div class="mt-3 text-center text-black">
+          <p>Already have an account? <a href="#" onclick="switchToLogin()" class="text-warning">Login</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script>
+    function togglePasswordVisibility(inputId, iconId) {
+      const input = document.getElementById(inputId);
+      const icon = document.getElementById(iconId);
+
+      if (input.type === "password") {
+        input.type = "text";
+        icon.classList.remove("fa-eye");
+        icon.classList.add("fa-eye-slash");
+      } else {
+        input.type = "password";
+        icon.classList.remove("fa-eye-slash");
+        icon.classList.add("fa-eye");
+      }
+    }
+
+    function openLogin() {
+      document.getElementById("loginOverlay").classList.add("active");
+    }
+
+    function closeLogin() {
+      document.getElementById("loginOverlay").classList.remove("active");
+    }
+
+    function openSignup() {
+      document.getElementById("signupOverlay").classList.add("active");
+    }
+
+    function closeSignup() {
+      document.getElementById("signupOverlay").classList.remove("active");
+    }
+
+    function switchToSignup() {
+      closeLogin();
+      openSignup();
+    }
+
+    function switchToLogin() {
+      closeSignup();
+      openLogin();
+    }
+
+    // Confirm password validation
+    document.getElementById("confirm_signup_password").addEventListener("input", function () {
+      if (this.value !== document.getElementById("signup_password").value) {
+        this.setCustomValidity("Passwords do not match");
+      } else {
+        this.setCustomValidity("");
+      }
+    });
+  </script>
+</body>
+{%include 'store/footer.html'%}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</html>

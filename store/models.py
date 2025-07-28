@@ -68,3 +68,4 @@ class Product(models.Model):
             kwargs.pop("force_update", None)
 
         super().save(*args, **kwargs)
+

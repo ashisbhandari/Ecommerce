@@ -5,8 +5,9 @@ urlpatterns = [
     path('',views.home,name="index"),
     path('main/',views.adminpage,name="Admin Page"),
     path('nav/',views.nav,name="Admin Page"),
-    path('footer/',views.footer,name="Admin Page"),
+    path('footer/',views.footer,name="footer"),
     # path('ashish/',views.update_stock,name="Admin Page"),
-    path('ashish/',views.ashish,name="Admin Page"),
-    path('product/<int:id>/',views.product,name="Admin Page"),
+    path('clicktoshop/',views.ashish,name="Admin Page"),
+    path('product/<int:id>/',views.product,name="product_details"),
+    path('contact/',views.contact,name="contact us"),
 ]

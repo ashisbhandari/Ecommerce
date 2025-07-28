@@ -38,7 +38,23 @@
       align-items: center;
       padding: 20px;
       z-index: 9999;
+      overflow: auto;
     }
+    
+    /* make the overlay responsive in mobile view */
+   @media (max-width: 768px) {
+  .overlay {
+    padding: 10px;
+    padding-top: 65%;
+   
+  }
+
+  .login-container {
+    max-width: 90vw;   /* almost full width but with some margin */
+    font-size: 0.9rem; /* reduce font size */
+    padding: 1.5rem 1rem;
+  }
+}
 
     .overlay.active {
       display: flex;
@@ -243,7 +259,7 @@
             <div class="mb-3">
                 <a href="#" class="btn btn-cart btn-custom me-2">Add to Cart</a>
                 {% if product.quantity > 0 and product.product_status != "Discontinued" %}
-                <a href="#" class="btn btn-buy btn-custom">Buy Now</a>
+                <a href="#" class="btn btn-buy btn-custom"  onclick="openPurchase()">Buy Now</a>
                 {% elif product.product_status == "Discontinued" %}
                 <a href="#" class="btn btn-danger btn-custom disabled">Discontinued</a>
                 {% elif product.quantity == 0 %}
@@ -252,8 +268,6 @@
 
             </div>
           </div>
-
-          <!-- RIGHT: Availability + Share -->
           <div class="col-md-3 d-flex flex-column justify-content-between">
             <div>
 
@@ -541,6 +555,194 @@
       </form>
     </div>
   </div>
+
+
+
+  <!-- purchase confirmation modal -->
+  <div class="overlay" id="purchaseOverlay">  
+  <div class="login-container">
+    <button class="close-btn" onclick="closePurchase()">×</button>
+    <form method="post" action="{% url 'index' %}" class="needs-validation" novalidate>
+  {% csrf_token %}
+  <input type="hidden" name="form_type" value="Purchase" />
+  <input type="hidden" name="product_id" value="{{ product.id }}" />
+
+  <h3 class="mb-4 text-center text-warning">Purchase Confirmation-<b>{{ product.name }}</b>  </h3>
+
+  <div class="mb-3">
+    <label for="Purchase_Name" class="form-label fw-semibold">Full Name</label>
+    <input
+      type="text"
+      class="form-control"
+      id="Purchase_Name"
+      name="Name"
+      placeholder="Enter your full name"
+      required
+    />
+    <!-- <div class="invalid-feedback">Please enter your name.</div> -->
+  </div>
+
+  <div class="mb-3">
+    <label for="email" class="form-label fw-semibold">Email Address</label>
+    <input
+      type="email"
+      class="form-control"
+      id="email"
+      name="email"
+      placeholder="name@example.com"
+      required
+    />
+    <!-- <div class="invalid-feedback">Please enter a valid email.</div> -->
+  </div>
+
+  <div class="mb-3">
+    <label for="contact" class="form-label fw-semibold">Contact Number</label>
+    <input
+      type="tel"
+      class="form-control"
+      id="contact"
+      name="contact"
+      placeholder="+977 98XXXXXXXX"
+      required
+      pattern="^\+?\d{7,15}$"
+    />
+    <!-- <div class="invalid-feedback">
+      Please enter a valid contact number (digits only, 7-15 characters).
+    </div> -->
+  </div>
+
+  <div class="mb-3">
+    <label for="address" class="form-label fw-semibold">Shipping Address</label>
+    <textarea
+      class="form-control"
+      id="address"
+      name="address"
+      rows="2"
+      placeholder="Enter your full shipping address"
+      required
+    ></textarea>
+    
+  </div>
+
+  <div class="row g-3 mb-3">
+    <div class="col-md-6">
+      <label for="required_unit" class="form-label fw-semibold">Required Units</label>
+      <input
+        type="number"
+        min="1"
+        class="form-control"
+        id="required_unit"
+        name="required_unit"
+        required
+        placeholder="1"
+      />
+      <div class="invalid-feedback">Please specify the quantity.</div>
+    </div>
+    <div class="col-md-6">
+      <label for="total_amount" class="form-label fw-semibold">Total Amount (Rs.)</label>
+      <input
+        type="text"
+        class="form-control"
+        id="total_amount"
+        name="total_amount"
+        readonly
+        placeholder="Calculated automatically"
+      />
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <label for="product_details_text" class="form-label fw-semibold">Product Details</label>
+    <textarea
+      class="form-control"
+      id="product_details_text"
+      rows="4"
+      readonly
+      style="background-color: #f8f9fa; color: #212529; font-weight: 500;"
+    >Name: {{ product.name }}
+Price: Rs. {{ product.price }}
+Category: {{ product.category }}
+Details: {{ product.description }}</textarea>
+  </div>
+
+  <button type="submit" class="btn btn-warning w-100 fw-semibold py-2 fs-5">
+    Confirm Order
+  </button>
+</form>
+
+<script>
+// Bootstrap 5 form validation script
+(() => {
+  'use strict';
+  const forms = document.querySelectorAll('.needs-validation');
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      form.classList.add('was-validated');
+    }, false);
+  });
+})();
+</script>
+
+  </div>
+</div>
+
+
+  <script>
+  // Assume product price is passed from Django template context
+ const productPrice = parseFloat('{{ product.price|default:"0" }}') || 0;
+
+  function openPurchase() {
+    // Get the quantity from the quantity box in the product details area
+    const quantitySpan = document.querySelector('.quantity-box .quantity-value');
+    const quantity = quantitySpan ? parseInt(quantitySpan.textContent.trim()) || 1 : 1;
+
+    // Find the purchase overlay and inputs inside it
+    const overlay = document.getElementById('purchaseOverlay');
+    const requiredUnitInput = overlay.querySelector('#required_unit');
+    const totalAmountInput = overlay.querySelector('#total_amount');
+
+    // Set the quantity value to the required_unit input
+    if (requiredUnitInput) {
+      requiredUnitInput.value = quantity;
+    }
+
+    // Calculate and set total amount
+    if (totalAmountInput) {
+      totalAmountInput.value = (quantity * productPrice).toFixed(2);
+    }
+
+    // Show the overlay
+    overlay.classList.add('active');
+  }
+
+  function closePurchase() {
+    document.getElementById('purchaseOverlay').classList.remove('active');
+  }
+
+  // Update total amount when user changes quantity manually inside the form
+  document.addEventListener('DOMContentLoaded', () => {
+    const requiredUnitInput = document.querySelector('#required_unit');
+    const totalAmountInput = document.querySelector('#total_amount');
+
+    if (requiredUnitInput && totalAmountInput) {
+      requiredUnitInput.addEventListener('input', () => {
+        let qty = parseInt(requiredUnitInput.value);
+        if (isNaN(qty) || qty < 1) {
+          qty = 1; // Minimum quantity 1
+          requiredUnitInput.value = qty;
+        }
+        totalAmountInput.value = (qty * productPrice).toFixed(2);
+      });
+    }
+  });
+</script>
+
+
+</div>
 
   <!-- Scripts -->
   <script>

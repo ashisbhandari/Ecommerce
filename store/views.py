@@ -1,9 +1,13 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib import messages
 from .models import CustomUser,Product
+from decimal import Decimal, InvalidOperation
+from django.contrib import messages
+import json
+from bson.decimal128 import Decimal128
 
-from django.contrib.auth.hashers import make_password, check_password
+
 
 
 def home(request):
@@ -64,9 +68,7 @@ def adminpage(request):
         description = request.POST.get('product_description')
         category = request.POST.get('product_category')
         stock = request.POST.get('product_stock')
-        status = request.POST.get('product_status')  # Typo fixed: 'producy_status' → 'product_status'
-
-        # Save to the database
+        status = request.POST.get('product_status') 
         Product.objects.create(
             name=name,
             price=price,
@@ -80,10 +82,6 @@ def adminpage(request):
         return redirect('/main')  
 
     return render(request, "store/admin-page.html")
-
-# def product_list(request):
-#     products = Product.objects.all()  # Get all products from DB
-#     return render(request, 'store/index.html', {'products': products})
 
 def nav(request):
     return render(request,"store/navbar.html")
@@ -113,25 +111,7 @@ def footer(request):
 #         return redirect('/main')
 #     products = Product.objects.all()
 #     return render(request, 'store/ok.html',{'products': products})
-from django.shortcuts import render, get_object_or_404, redirect
-from django.http import JsonResponse, HttpResponseBadRequest
-from django.views.decorators.http import require_GET, require_POST
-from django.views.decorators.csrf import csrf_exempt  # only if needed for API; try to avoid disabling CSRF
-from django.contrib import messages
 
-from .models import Product  # adjust import per your app structure
-
-
-
-from django.shortcuts import render, redirect
-from django.http import JsonResponse, HttpResponseNotFound
-
-from decimal import Decimal, InvalidOperation
-from django.contrib import messages
-from .models import Product
-from django.core.serializers import serialize
-import json
-from bson.decimal128 import Decimal128
 
 def ashish(request):
     if request.method == "POST":
@@ -162,45 +142,51 @@ def ashish(request):
                 product.save()
                 messages.success(request, f"Product '{name}' added successfully.")
 
-            return redirect('/ashish')
-
+            return redirect('/clicktoshop')
+        
+        # update stock level of product
         elif form_type == 'update_stock':
             product_id_or_name = request.POST.get('product_id', '').strip()
-            add_quantity = request.POST.get('product_stock', '').strip()
-            status = request.POST.get('product_status', '').strip()
+            quantity_input = request.POST.get('product_stock', '').strip()
             price_input = request.POST.get('price', '').strip()
-
-            if not add_quantity.isdigit():
-                messages.error(request, "Please enter a valid quantity to add.")
-                return redirect('/ashish')
-
-            add_quantity = int(add_quantity)
+            try:
+                quantity_change = int(quantity_input)
+            except ValueError:
+                messages.error(request, "Please enter a valid integer for stock quantity.")
+                return redirect('/clicktoshop')
 
             try:
                 if product_id_or_name.isdigit():
                     product = Product.objects.get(id=int(product_id_or_name))
                 else:
                     product = Product.objects.get(name__iexact=product_id_or_name)
-                product.quantity += add_quantity
 
-                if status:
-                    product.product_status = status
+                new_quantity = product.quantity + quantity_change
+                if new_quantity < 0:
+                    messages.error(request, f"Insufficient stock. Current stock: {product.quantity}")
+                    return redirect('/clicktoshop')
+
+                product.quantity = new_quantity
+                if new_quantity <= 0:
+                    product.product_status = "Out of Stock"
+                else:
+                    product.product_status = "Available"
 
                 if price_input:
                     try:
                         product.price = Decimal(price_input)
                     except InvalidOperation:
-                        messages.error(request, "Invalid price format. Please enter a valid decimal number.")
-                        return redirect('/ashish')
+                        messages.error(request, "Invalid price format.")
+                        return redirect('/clicktoshop')
 
                 product.save()
-                messages.success(request, f"Stock updated successfully for '{product.name}'.")
+                change_type = "increased" if quantity_change >= 0 else "decreased"
+                messages.success(request, f"Stock {change_type} for '{product.name}'. New quantity: {new_quantity}")
 
             except Product.DoesNotExist:
-                messages.error(request, "Product not found. Please check the ID or name.")
+                messages.error(request, "Product not found. Please check the ID or Name.")
 
-        return redirect('/ashish')
-
+        return redirect('/clicktoshop')
     products = Product.objects.all().order_by('id')
     product_data = [                
         {
@@ -222,3 +208,6 @@ def product(request, id):
     product = get_object_or_404(Product, id=id)
     products = Product.objects.exclude(id=id)
     return render(request, 'store/product.html', {'product': product,'products':products})
+
+def contact(request):
+    return render(request,"store/contact_us.html")

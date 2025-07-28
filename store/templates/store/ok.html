@@ -29,12 +29,52 @@
       border: none;
       color: white;
       transition: transform 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
     }
     .card:hover {
       transform: scale(1.05);
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
     }
+
     .overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: rgba(0, 0, 0, 0.75);
+      color: #fff;
+      padding: 15px;
+      transform: translateY(100%);
+      transition: transform 0.3s ease-in-out;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      border-top-left-radius: 0.5rem;
+      border-top-right-radius: 0.5rem;
+    }
+
+    .card:hover .overlay,
+    .card:focus-within .overlay {
+      transform: translateY(0);
+    }
+
+    .overlay p {
+      margin: 0 0 10px;
+      font-size: 0.9rem;
+      flex-grow: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .overlay .btn {
+      width: 100%;
+      font-size: 0.9rem;
+    }
+
+    /* Modals */
+    .overlay-modal {
       position: fixed;
       top: 0;
       left: 0;
@@ -49,7 +89,7 @@
       z-index: 9999;
     }
 
-    .overlay.active {
+    .overlay-modal.active {
       display: flex;
     }
 
@@ -115,10 +155,34 @@
 
     #toast-messages {
       position: fixed;
-      top: 20px;
+      bottom: 0;
+      color:black;
+      position: fixed;
+      bottom: 20px;
       right: 20px;
-      z-index: 10000;
+      z-index: 1050;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      max-width: 300px;
     }
+
+#toast-messages .alert {
+  border-radius: 8px;
+  background-color: #f8d7da;
+  color: #721c24;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  opacity: 1;
+  transition: opacity 0.5s ease-in-out;
+  padding: 12px 20px;
+  font-size: 0.95rem;
+  cursor: pointer;
+}
+
+#toast-messages .alert.fade-out {
+  opacity: 0;
+}
+
 
     .alert {
       min-width: 260px;
@@ -134,7 +198,6 @@
       font-size: 1.25rem;
       font-weight: 500;
     }
-
   </style>
 </head>
 
@@ -176,6 +239,7 @@
   </div>
 </nav>
 
+<!-- Dashboard Cards -->
 <div class="container py-4">
   <div class="row g-3 text-center">
 
@@ -234,9 +298,6 @@
   </div>
 </div>
 
-
-
-
 <!-- Toast Messages -->
 <div id="toast-messages">
   {% if messages %}
@@ -254,9 +315,9 @@
   <div class="row g-3">
     {% for product in products %}
     <div class="col-lg-3 col-sm-4 col-6">
-      <div class="card text-white h-100 shadow-sm">
+      <div class="card text-white h-100 shadow-sm" tabindex="0">
         {% if product.image %}
-          <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" height="300" onerror="this.onerror=null;">
+          <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" height="300">
         {% else %}
           <img src="{% static 'default.jpg' %}" class="card-img-top" alt="No image" height="300">
         {% endif %}
@@ -265,7 +326,7 @@
           <!-- Title and Price on same line -->
           <div class="d-flex justify-content-between align-items-center mb-2">
             <h5 class="card-title mb-0">{{ product.name }} (ID: {{ product.id }})</h5>
-            <span class="text-warning fw-bold">Rs {{ product.price}}</span>
+            <span class="text-warning fw-bold">Rs {{ product.price }}</span>
           </div>
           <p class="card-text text-black flex-grow-1">{{ product.description|truncatewords:20 }}</p>
 
@@ -276,13 +337,27 @@
             <span class="badge bg-success">Qty: {{ product.quantity }}</span>
           </div>
 
-          <!-- Button -->
-          <button class="btn btn-success btn-sm mt-auto"
-            onclick="openUpdateStock('{{ product.id }}', '{{ product.name }}', '{{ product.price }}', '{{ product.quantity }}', '{{ product.product_status }}')">
-            Increase Stock
-          </button>
-        </div>
+          <div class="overlay">
+            <p>{{ product.description|truncatechars:80 }}</p>
 
+            <div class="d-flex flex-column gap-2 w-100">
+              <button class="btn btn-light btn-sm"
+                onclick="openUpdateStock('{{ product.id }}', '{{ product.name }}', '{{ product.price }}', '{{ product.quantity }}', '{{ product.product_status }}')">
+                Increase Stock
+              </button>
+
+              <button class="btn btn-warning btn-sm text-white" onclick="alert('Update Deals feature coming soon!')">
+                Update Deals
+              </button>
+
+              <button class="btn btn-danger btn-sm"
+                onclick="deleteProduct('{{ product.id }}')">
+                Delete Product
+              </button>
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
     {% empty %}
@@ -291,9 +366,8 @@
   </div>
 </div>
 
-
 <!-- Add Product Modal -->
-<div class="overlay" id="addProductOverlay">
+<div class="overlay-modal" id="addProductOverlay">
   <div class="login-container">
     <button class="close-btn" onclick="closeAddProduct()">×</button>
     <h2 class="text-center mb-3">Add Product</h2>
@@ -317,10 +391,10 @@
       <select class="form-select" name="product_category" id="product_category_add" required>
         <option value="" disabled selected>Select category</option>
         <option value="Grocery">Grocery</option>
-        <option value="electronics">Electronics</option>
-        <option value="clothing">Clothing</option>
-        <option value="home_appliances">Home Appliances</option>
-        <option value="books">Books</option>
+        <option value="Electronics">Electronics</option>
+        <option value="Clothing">Clothing</option>
+        <option value="Home Appliances">Home Appliances</option>
+        <option value="Books">Books</option>
       </select>
 
       <label for="product_stock_add">Stock Quantity</label>
@@ -341,7 +415,7 @@
 </div>
 
 <!-- Update Stock Modal -->
-<div class="overlay" id="updateStockOverlay">
+<div class="overlay-modal" id="updateStockOverlay">
   <div class="login-container">
     <button class="close-btn" onclick="closeUpdateStock()">×</button>
     <h2 class="text-center mb-3">Update Stock</h2>
@@ -363,7 +437,7 @@
       <input
         type="text"
         class="form-control"
-        name="product_name"
+        name="name"
         id="product_name_update"
         readonly
         required
@@ -373,7 +447,7 @@
       <input
         type="number"
         class="form-control"
-        name="product_price"
+        name="price"
         id="product_price_update"
         readonly
         required
@@ -382,9 +456,8 @@
       <label for="product_stock_update">Stock Quantity to Add</label>
       <input
         type="number"
-        min="1"
         class="form-control"
-        name="add_quantity"
+        name="product_stock"
         id="product_stock_update"
         placeholder="Enter quantity to add"
         required
@@ -393,9 +466,8 @@
       <label for="product_status_update">Product Status</label>
       <select class="form-select" name="product_status" id="product_status_update" required>
         <option value="" disabled>Select status</option>
-        <option value="available">Available</option>
-        <option value="out_of_stock">Out of Stock</option>
-        <option value="discontinued">Discontinued</option>
+        <option value="Available">Available</option>
+        <option value="Discontinued">Discontinued</option>
       </select>
 
       <button type="submit" class="btn btn-success mt-3 w-100">
@@ -406,15 +478,6 @@
 </div>
 
 <script>
-  // Quantity changer buttons on product cards
-  function changeQuantity(btn, delta) {
-    const container = btn.closest('.card-body');
-    const valueSpan = container.querySelector('.quantity-value');
-    let currentValue = parseInt(valueSpan.innerText) || 1;
-    currentValue = Math.max(1, currentValue + delta);
-    valueSpan.innerText = currentValue;
-  }
-
   // Show/hide Add Product modal
   function openAddProduct() {
     document.getElementById("addProductOverlay").classList.add("active");
@@ -426,16 +489,20 @@
   // Show/hide Update Stock modal
   function openUpdateStock(id = '', name = '', price = '', stock = '', status = '') {
     document.getElementById("updateStockOverlay").classList.add("active");
-    // Prefill the fields with product data
     document.getElementById('product_id_update').value = id;
     document.getElementById('product_name_update').value = name;
     document.getElementById('product_price_update').value = price;
-    let intPrice = Math.floor(price); // JS floor, removing decimals
     document.getElementById('product_stock_update').value = '';  // Clear for new input
     document.getElementById('product_status_update').value = status || '';
   }
   function closeUpdateStock() {
     document.getElementById("updateStockOverlay").classList.remove("active");
+  }
+
+  function deleteProduct(id) {
+    if (confirm('Are you sure you want to delete this product?')) {
+      window.location.href = `/products/delete/${id}/`;
+    }
   }
 
   // Auto-hide toast alerts after 5 seconds

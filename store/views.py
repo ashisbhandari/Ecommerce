@@ -125,6 +125,8 @@ from .models import Product  # adjust import per your app structure
 
 from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponseNotFound
+
+from decimal import Decimal, InvalidOperation
 from django.contrib import messages
 from .models import Product
 from django.core.serializers import serialize
@@ -163,27 +165,44 @@ def ashish(request):
             return redirect('/ashish')
 
         elif form_type == 'update_stock':
-            product_id_or_name = request.POST.get('product_id').strip()
-            stock = request.POST.get('product_stock')
-            status = request.POST.get('product_status')
+            product_id_or_name = request.POST.get('product_id', '').strip()
+            add_quantity = request.POST.get('product_stock', '').strip()
+            status = request.POST.get('product_status', '').strip()
+            price_input = request.POST.get('price', '').strip()
+
+            if not add_quantity.isdigit():
+                messages.error(request, "Please enter a valid quantity to add.")
+                return redirect('/ashish')
+
+            add_quantity = int(add_quantity)
 
             try:
                 if product_id_or_name.isdigit():
                     product = Product.objects.get(id=int(product_id_or_name))
                 else:
                     product = Product.objects.get(name__iexact=product_id_or_name)
+                product.quantity += add_quantity
 
-                product.quantity = stock
-                product.product_status = status
+                if status:
+                    product.product_status = status
+
+                if price_input:
+                    try:
+                        product.price = Decimal(price_input)
+                    except InvalidOperation:
+                        messages.error(request, "Invalid price format. Please enter a valid decimal number.")
+                        return redirect('/ashish')
+
                 product.save()
-                messages.success(request, f"Stock updated for '{product.name}'.")
-            except Product.DoesNotExist:
-                messages.error(request, "Product not found.")
+                messages.success(request, f"Stock updated successfully for '{product.name}'.")
 
-            return redirect('/ashish')
+            except Product.DoesNotExist:
+                messages.error(request, "Product not found. Please check the ID or name.")
+
+        return redirect('/ashish')
 
     products = Product.objects.all().order_by('id')
-    product_data = [
+    product_data = [                
         {
             "id": p.id,
             "name": p.name,

@@ -181,6 +181,111 @@
 </script>
 
 
+<style>
+  .floating-cart-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 100PX;
+      z-index: 2100;
+    }
+
+    .cart-item {
+      border-bottom: 1px solid #ddd;
+      padding: 10px 0;
+    }
+    .cart-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.6);
+      z-index: 2000;
+      justify-content: flex-end;
+    }
+
+    .cart-panel {
+      width: 450px;
+      max-width: 100%;
+      height:auto;
+      background-color: #fff;
+      padding: 1.5rem;
+      overflow-y: auto;
+      box-shadow: -2px 0 10px rgba(0,0,0,0.3);
+      position: relative;
+    }
+
+    .cart-panel h3 {
+      font-size: 1.5rem;
+      margin-bottom: 1rem;
+      color: #333;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #000;
+    }
+
+</style>
+
+<!-- open cart button/ -->
+  <button class="btn btn-primary shadow floating-cart-btn" onclick="openCart()">
+    <i class="fa fa-shopping-cart"></i> View Cart
+  </button>
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCart(event)">
+    <div class="cart-panel" onclick="event.stopPropagation()">
+      <button class="close-btn" onclick="closeCart()"><i class="fa fa-window-close" aria-hidden="true"></i></button>
+      <h3>Your Cart <i class="fa fa-shopping-cart"></i></h3>
+      <div class="cart-item d-flex justify-content-between align-items-center">
+
+        <span style="height:80px; width:80px;"><img src="{% static 'store/logo.png' %}" class="card-img-top img-fluid" alt="Product Image" />Dummy</span>
+        
+        <span class="quantity-controls">
+          <button class="btn btn-info btn-sm" onclick="changecartQuantity(this, -1)">-</button>
+          <span class="quantity-value">1</span>
+          <button class="btn btn-info btn-sm" onclick="changecartQuantity(this, 1)">+</button>
+        </span>
+        <script>
+          function changecartQuantity(btn, delta) {
+            const container = btn.closest('.quantity-controls');
+            const valueSpan = container.querySelector('.quantity-value');
+            let currentValue = parseInt(valueSpan.innerText) || 1;
+            currentValue = Math.max(1, currentValue + delta);
+            valueSpan.innerText = currentValue;
+          }
+        </script>
+
+        <span class="card-price">RS 20</span>
+        <button class="btn btn-primary btn-sm " style="width: 50px;">Buy</button>
+        <button class="btn btn-danger btn-sm"><i class="fa fa-trash" aria-hidden="true"></i></button>
+      </div>
+
+      <!-- Empty Message -->
+      <p class="text-center text-muted mt-3 py-3">Your cart is empty.</p>
+    </div>
+  </div>
+  <script>
+    function openCart() {
+      document.getElementById('cartOverlay').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCart(event) {
+      document.getElementById('cartOverlay').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+  </script>
+
+
+
 
 
 

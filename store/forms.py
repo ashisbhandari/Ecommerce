@@ -1,7 +1,7 @@
 # store/forms.py
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import CustomUser,Product
+from .models import CustomUser,Product,purchase
 
 class SignupForm(UserCreationForm):
     email = forms.EmailField(required=True)
@@ -32,3 +32,7 @@ class AddProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ['name', 'price', 'description', 'category', 'quantity', 'product_status', 'image']
+class buyproduct(forms.ModelForm):
+    class Meta:
+        model=purchase
+        fields =['user_name','user_address','user_email','user_contact','product_name','product_quantity','product_price','product_description','product_category','total_amount']

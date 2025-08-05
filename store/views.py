@@ -204,10 +204,62 @@ def ashish(request):
         'product_json': json.dumps(product_data)
     })
 
+# def product(request, id):
+#     product = get_object_or_404(Product, id=id)
+#     products = Product.objects.exclude(id=id)
+#     if request.method == "POST":
+#         form_type = request.POST.get('form_type')
+
+#         # Add Product
+#         if form_type == 'Purchase':
+#             name = request.POST.get('product_name').strip()
+#             price = request.POST.get('product_price')
+#             description = request.POST.get('product_description').strip()
+#             category = request.POST.get('product_category')
+#             stock = request.POST.get('product_stock')
+#             status = request.POST.get('product_status')
+
+#             if Product.objects.filter(name__iexact=name).exists():
+#                 messages.error(request, f"Product '{name}' already exists.")
+#             else:
+#                 product = Product(
+#                     name=name,
+#                     price=price,
+#                     description=description,
+#                     category=category,
+#                     quantity=stock,
+#                     product_status=status,
+#                     image=image
+#                 )
+#                 product.save()
+#                 messages.success(request, f"Product '{name}' added successfully.")
+
+#             return redirect('/clicktoshop')
+
+#     return render(request, 'store/product.html', {'product': product,'products':products})
+from .forms import buyproduct
 def product(request, id):
     product = get_object_or_404(Product, id=id)
     products = Product.objects.exclude(id=id)
-    return render(request, 'store/product.html', {'product': product,'products':products})
+
+    if request.method == "POST" and request.POST.get("form_type") == "Purchase":
+        form = buyproduct(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Your order has been confirmed.")
+            return redirect('/')
+        else:
+            messages.error(request, "There was an error in the form. Please try again.")
+    else:
+        form = buyproduct()
+
+    return render(request, 'store/product.html', {
+        'product': product,
+        'products': products,
+        'form': form
+    })
 
 def contact(request):
     return render(request,"store/contact_us.html")
+def test(request):
+    return render(request,"store/test.html")

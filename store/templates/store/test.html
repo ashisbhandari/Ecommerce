@@ -1,0 +1,224 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Anusha Bhandari — Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0f0f0f;
+      --light: #ffffff;
+      --primary: #fbb6b6;
+      --text-muted: #cccccc;
+      --font: 'Inter', sans-serif;
+    }
+
+    body.light-mode {
+      --bg: #ffffff;
+      --light: #0f0f0f;
+      --primary: #d94e4e;
+      --text-muted: #555555;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font);
+      background-color: var(--bg);
+      color: var(--light);
+      overflow-x: hidden;
+      transition: all 0.3s ease;
+    }
+
+    /* === Theme Toggle (Switch Circle) === */
+    .theme-switch {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 100;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;
+      height: 34px;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0;
+      right: 0; bottom: 0;
+      background-color: var(--text-muted);
+      transition: .4s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 26px;
+      width: 26px;
+      left: 4px;
+      bottom: 4px;
+      background-color: var(--light);
+      transition: .4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+  background-color: var(--light);
+}
+
+input:checked + .slider::before {
+  transform: translateX(30px);
+  background-color: var(--bg);
+}
+
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    .hero-image-wrapper {
+      background-color: #1a1a1a;
+      border-radius: 2rem;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      max-width: 600px;
+    }
+
+    .hero-image-wrapper img {
+      width: 100%;
+      border-radius: 1rem;
+      object-fit: cover;
+      transition: filter 0.5s ease;
+    }
+
+    body:not(.light-mode) .hero-image-wrapper img {
+      filter: grayscale(100%);
+    }
+
+    .hero-title {
+      font-size: 4rem;
+      font-weight: 900;
+      background: linear-gradient(to top, var(--primary) 50%, var(--light) 50%);
+      /*-webkit-background-clip: text;*/
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+      margin-bottom: 10px;
+    }
+
+    .hero-subtitle {
+      font-size: 1.2rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .contact-btn {
+      margin-top: 30px;
+      padding: 12px 26px;
+      border: 2px solid var(--light);
+      border-radius: 50px;
+      background: transparent;
+      color: var(--light);
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+
+    .contact-btn:hover {
+      background: var(--light);
+      color: var(--bg);
+    }
+
+    .scroll-indicator {
+      margin-top: 50px;
+      width: 24px;
+      height: 40px;
+      border: 2px solid var(--light);
+      border-radius: 15px;
+      position: relative;
+    }
+
+    .scroll-indicator::after {
+      content: "";
+      width: 6px;
+      height: 6px;
+      background: var(--light);
+      border-radius: 50%;
+      position: absolute;
+      top: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      animation: scroll 2s infinite;
+    }
+
+    @keyframes scroll {
+      0% { top: 8px; opacity: 1; }
+      50% { top: 20px; opacity: 0.3; }
+      100% { top: 8px; opacity: 1; }
+    }
+
+    @media (max-width: 768px) {
+      .hero-title {
+        font-size: 2.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Theme Switch -->
+  <div class="theme-switch">
+    <label class="switch">
+      <input type="checkbox" id="themeToggle" onchange="toggleTheme()" />
+      <span class="slider round"></span>
+    </label>
+  </div>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-image-wrapper">
+      <img src="{% static 'store/logo.png' %}" alt="Anusha Bhandari" />
+    </div>
+    <h1 class="hero-title">ANUSHA BHANDARI</h1>
+    <p class="hero-subtitle">BBA Student / Aspiring Entrepreneur</p>
+    <a href="#contact" class="contact-btn">Get in touch →</a>
+    <div class="scroll-indicator"></div>
+  </section>
+
+  <!-- Theme Switch Script -->
+  <script>
+    function toggleTheme() {
+      document.body.classList.toggle('light-mode');
+      localStorage.setItem('theme', document.body.classList.contains('light-mode') ? 'light' : 'dark');
+    }
+
+    window.onload = function () {
+      if (localStorage.getItem('theme') === 'light') {
+        document.body.classList.add('light-mode');
+        document.getElementById('themeToggle').checked = true;
+      }
+    };
+  </script>
+</body>
+</html>

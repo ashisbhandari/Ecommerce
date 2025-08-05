@@ -8,6 +8,7 @@ urlpatterns = [
     path('footer/',views.footer,name="footer"),
     # path('ashish/',views.update_stock,name="Admin Page"),
     path('clicktoshop/',views.ashish,name="Admin Page"),
-    path('product/<int:id>/',views.product,name="product_details"),
+    path('product/<int:id>/',views.product,name="product"),
     path('contact/',views.contact,name="contact us"),
+    path('test/',views.test,name="contact us"),
 ]

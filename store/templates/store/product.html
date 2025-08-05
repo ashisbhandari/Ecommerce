@@ -669,107 +669,55 @@
   <div class="overlay" id="purchaseOverlay">  
   <div class="login-container">
     <button class="close-btn" onclick="closePurchase()">×</button>
-    <form method="post" action="{% url 'index' %}" class="needs-validation" novalidate>
+  <form method="post" action="{% url 'product' product.id %}" class="needs-validation" novalidate>
   {% csrf_token %}
   <input type="hidden" name="form_type" value="Purchase" />
-  <input type="hidden" name="product_id" value="{{ product.id }}" />
+  <input type="hidden" name="product_price" value="{{ product.price }}" />
+  <input type="hidden" name="product_description" value="{{ product.description }}" />
+  <input type="hidden" name="product_category" value="{{ product.category }}" />
+  <input type="hidden" name="product_name" value="{{ product.name }}" />
 
-  <h3 class="mb-4 text-center text-warning">Purchase Confirmation-<b>{{ product.name }}</b>  </h3>
+  <h3 class="mb-4 text-center text-warning">Purchase Confirmation - <b>{{ product.name }}</b></h3>
 
   <div class="mb-3">
     <label for="Purchase_Name" class="form-label fw-semibold">Full Name</label>
-    <input
-      type="text"
-      class="form-control"
-      id="Purchase_Name"
-      name="Name"
-      placeholder="Enter your full name"
-      required
-    />
-    <!-- <div class="invalid-feedback">Please enter your name.</div> -->
+    <input type="text" class="form-control" id="Purchase_Name" name="user_name" placeholder="Enter your full name" required />
   </div>
 
   <div class="mb-3">
     <label for="email" class="form-label fw-semibold">Email Address</label>
-    <input
-      type="email"
-      class="form-control"
-      id="email"
-      name="email"
-      placeholder="name@example.com"
-      required
-    />
-    <!-- <div class="invalid-feedback">Please enter a valid email.</div> -->
+    <input type="email" class="form-control" id="email" name="user_email" placeholder="name@example.com" required />
   </div>
 
   <div class="mb-3">
     <label for="contact" class="form-label fw-semibold">Contact Number</label>
-    <input
-      type="tel"
-      class="form-control"
-      id="contact"
-      name="contact"
-      placeholder="+977 98XXXXXXXX"
-      required
-      pattern="^\+?\d{7,15}$"
-    />
-    <!-- <div class="invalid-feedback">
-      Please enter a valid contact number (digits only, 7-15 characters).
-    </div> -->
+    <input type="tel" class="form-control" id="contact" name="user_contact" placeholder="+977 98XXXXXXXX" required pattern="^\+?\d{7,15}$" />
   </div>
 
   <div class="mb-3">
     <label for="address" class="form-label fw-semibold">Shipping Address</label>
-    <textarea
-      class="form-control"
-      id="address"
-      name="address"
-      rows="2"
-      placeholder="Enter your full shipping address"
-      required
-    ></textarea>
-    
+    <textarea class="form-control" id="address" name="user_address" rows="2" placeholder="Enter your full shipping address" required></textarea>
   </div>
 
   <div class="row g-3 mb-3">
     <div class="col-md-6">
       <label for="required_unit" class="form-label fw-semibold">Required Units</label>
-      <input
-        type="number"
-        min="1"
-        class="form-control"
-        id="required_unit"
-        name="required_unit"
-        required
-        placeholder="1"
-      />
-      <div class="invalid-feedback">Please specify the quantity.</div>
+      <input type="number" min="1" class="form-control" id="required_unit" name="product_quantity" required placeholder="1" />
     </div>
     <div class="col-md-6">
       <label for="total_amount" class="form-label fw-semibold">Total Amount (Rs.)</label>
-      <input
-        type="text"
-        class="form-control"
-        id="total_amount"
-        name="total_amount"
-        readonly
-        placeholder="Calculated automatically"
-      />
+      <input type="text" class="form-control" id="total_amount" name="total_amount" readonly placeholder="Calculated automatically" />
     </div>
   </div>
 
   <div class="mb-3">
     <label for="product_details_text" class="form-label fw-semibold">Product Details</label>
-    <textarea
-      class="form-control"
-      id="product_details_text"
-      rows="4"
-      readonly
-      style="background-color: #f8f9fa; color: #212529; font-weight: 500;"
-    >Name: {{ product.name }}
+    <textarea class="form-control" id="product_details_text" rows="4" readonly style="background-color: #f8f9fa; color: #212529; font-weight: 500;">
+Name: {{ product.name }}
 Price: Rs. {{ product.price }}
 Category: {{ product.category }}
-Details: {{ product.description }}</textarea>
+Details: {{ product.description }}
+    </textarea>
   </div>
 
   <button type="submit" class="btn btn-warning w-100 fw-semibold py-2 fs-5">

@@ -1,4 +1,4 @@
-{%load static%}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,77 +6,106 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>ClickToShop - Footer</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-
-    footer h5 {
-      color: #f8f9fa;
-      margin-bottom: 15px;
+    :root {
+      --dark-color: #1f1f1f;
+      --light-color: #f8f9fa;
+      --secondary-color: #ffc107;
     }
-    footer ul {
+
+    .footer {
+      background-color: var(--dark-color);
+      color: var(--light-color);
+      padding: 3rem 0 1rem;
+      margin-top: 4rem;
+    }
+
+    .footer a {
+      color: var(--light-color);
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      color: var(--secondary-color);
+    }
+
+    .footer h5 {
+      color: var(--secondary-color);
+      margin-bottom: 1rem;
+    }
+
+    .footer ul {
       list-style: none;
       padding: 0;
     }
-    footer ul li {
-      color: #adb5bd;
-      margin-bottom: 8px;
-    }
-    footer p {
-      color: #adb5bd;
-    }
-    .ftr{
-        font-size: 18px;
-    }
-    p,h5:hover{
-        color:orange;
-    }
-    li:hover{
-        color: orange;
-    }
-    .uppercase{
-        text-transform: uppercase;
 
+    .footer li {
+      padding: 0.3rem 0;
     }
-    
+
+    .social-icons i {
+      margin-right: 10px;
+      font-size: 1.2rem;
+      transition: transform 0.3s;
+    }
+
+    .social-icons i:hover {
+      transform: scale(1.2);
+      color: var(--secondary-color);
+    }
+
+    .copyright {
+      font-size: 0.9rem;
+    }
   </style>
 </head>
 <body>
 
 <!-- Footer Start -->
-<footer class="bg-dark text-white py-5 mt-5 ftr">
+<footer class="footer">
   <div class="container">
     <div class="row">
-      <h5 class="uppercase">About</h5>
+      <!-- About Section -->
       <div class="col-md-4 mb-4">
-        <a class="navbar-brand d-flex align-items-center" href="/" style="color: orange;">
-        <img src="{% static 'store/logo.png' %}" alt="Logo" height="50" class="me-2" />
-        ClickToShop
-        </a>        
+        <div class="d-flex align-items-center mb-3">
+          <i class="fas fa-shopping-cart me-2 fs-4 text-warning"></i>
+          <h5 class="mb-0">ClickToShop</h5>
+        </div>
         <p>
           ClickToShop is an eCommerce platform for groceries that provides all the daily-use items you need. We deliver directly from the company to your doorstep in just one click.
         </p>
       </div>
+
+      <!-- Quick Links -->
       <div class="col-md-4 mb-4">
-        <h5 class="uppercase">ClickToShop</h5>
+        <h5>Quick Links</h5>
         <ul>
-          <li>Terms & Conditions</li>
-          <li>Recent Deals</li>
-          <li>Top Products</li>
+          <li><a href="#">Terms & Conditions</a></li>
+          <li><a href="#">Privacy Policy</a></li>
+          <li><a href="#">Recent Deals</a></li>
+          <li><a href="#">Top Products</a></li>
         </ul>
       </div>
+
+      <!-- Contact & Social -->
       <div class="col-md-4 mb-4">
-        <h5 class="uppercase">Contact Us</h5>
+        <h5>Contact Us</h5>
         <ul>
-          <li><i class="fa fa-phone me-2"></i> Customer Care</li>
-          <li><i class="fa fa-facebook-official me-2"></i> Facebook</li>
-          <li><i class="fa fa-instagram me-2"></i> Instagram</li>
-          <li><i class="fa fa-envelope me-2"></i>E-Mail</li>
+          <li><i class="fa fa-phone me-2"></i> +977-800-CLICK-SHOP</li>
+          <li><i class="fa fa-envelope me-2"></i> email@clicktoshop.com</li>
         </ul>
+        <div class="mt-2 social-icons">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+        </div>
       </div>
     </div>
-    <hr class="border-light" />
-    <div class="text-center small text-muted">
-      &copy; 2025 ClickToShop. All rights reserved.
+
+    <hr class="border-light">
+    <div class="text-center copyright">
+      <p>&copy; 2025 ClickToShop. All rights reserved.</p>
     </div>
   </div>
 </footer>

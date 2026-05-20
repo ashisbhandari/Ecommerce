@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Purchase Form</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            display: none;
+            z-index: 1000;
+            overflow-y: auto;
+        }
+
+        .overlay.active {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .purchase-container {
+            background: white;
+            border-radius: 15px;
+            width: 100%;
+            max-width: 1000px;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            font-size: 28px;
+            color: #666;
+            cursor: pointer;
+            z-index: 10;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .close-btn:hover {
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        .product-section {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            padding: 40px 30px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .product-image {
+            width: 250px;
+            height: 250px;
+            background: #fff;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e9ecef;
+        }
+
+        .product-image img {
+            max-width: 100%;
+            max-height: 100%;
+            border-radius: 10px;
+        }
+
+        .product-image-placeholder {
+            color: #6c757d;
+            font-size: 48px;
+        }
+
+        .product-info {
+            text-align: center;
+            color: #495057;
+        }
+
+        .product-name {
+            font-size: 24px;
+            font-weight: 700;
+            color: #212529;
+            margin-bottom: 8px;
+        }
+
+        .product-price {
+            font-size: 28px;
+            font-weight: 800;
+            color: #ffc107;
+            margin-bottom: 10px;
+        }
+
+        .product-category {
+            display: inline-block;
+            background: #e7f3ff;
+            color: #0066cc;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .payment-section {
+            padding: 40px 35px;
+            background: white;
+        }
+
+        .section-title {
+            color: #212529;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 25px;
+            text-align: center;
+        }
+
+        .form-label {
+            color: #495057;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .form-control, .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 12px 15px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #ffc107;
+            box-shadow: 0 0 0 0.2rem rgba(255, 193, 7, 0.25);
+        }
+
+        .total-section {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border: 2px solid #ffc107;
+            border-radius: 12px;
+            padding: 20px;
+            margin: 25px 0;
+        }
+
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .total-row:last-child {
+            margin-bottom: 0;
+            border-top: 2px solid #ffc107;
+            padding-top: 12px;
+            margin-top: 12px;
+        }
+
+        .total-label {
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .total-value {
+            font-weight: 700;
+            color: #212529;
+        }
+
+        .total-final {
+            font-size: 20px;
+            color: #e67e22;
+        }
+
+        .btn-confirm {
+            background: linear-gradient(135deg, #ffc107 0%, #ffb300 100%);
+            border: none;
+            border-radius: 10px;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: 700;
+            color: #212529;
+            width: 100%;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 193, 7, 0.4);
+        }
+
+        .btn-confirm:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 193, 7, 0.6);
+            background: linear-gradient(135deg, #ffb300 0%, #ffa000 100%);
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .qty-btn {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #ffc107;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-weight: 700;
+            color: #ffc107;
+            transition: all 0.3s ease;
+        }
+
+        .qty-btn:hover {
+            background: #ffc107;
+            color: white;
+        }
+
+        .qty-display {
+            font-size: 18px;
+            font-weight: 700;
+            min-width: 40px;
+            text-align: center;
+            color: #212529;
+        }
+
+        @media (max-width: 768px) {
+            .purchase-container {
+                margin: 10px;
+                max-height: 95vh;
+                overflow-y: auto;
+            }
+            
+            .product-section, .payment-section {
+                padding: 25px 20px;
+            }
+            
+            .product-image {
+                width: 200px;
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Demo button to open overlay -->
+    <div class="container mt-5">
+        <button class="btn btn-primary" onclick="openPurchase()">Open Purchase Form</button>
+    </div>
+
+    <div class="overlay" id="purchaseOverlay">
+        <div class="purchase-container">
+            <button class="close-btn" onclick="closePurchase()">×</button>
+            
+            <div class="row g-0 h-100">
+                <!-- Left Side - Product Image & Info -->
+                <div class="col-lg-5">
+                    <div class="product-section">
+                        <div class="product-image">
+                            <!-- Replace with actual product image -->
+                            <div class="product-image-placeholder">📱</div>
+                            <!-- <img src="product-image.jpg" alt="Product Image"> -->
+                        </div>
+                        <div class="product-info">
+                            <div class="product-name" id="productName">iPhone 15 Pro</div>
+                            <div class="product-price" id="productPrice">Rs. 150,000</div>
+                            <div class="product-category" id="productCategory">Electronics</div>
+                            <p class="mt-3 text-muted small" id="productDescription">
+                                Latest iPhone with Pro camera system and titanium design. Perfect for photography and professional use.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Side - Payment Form -->
+                <div class="col-lg-7">
+                    <div class="payment-section">
+                        <h3 class="section-title">Purchase Details</h3>
+                        
+                        <form method="post" action="#" class="needs-validation" novalidate>
+                            <!-- Hidden fields would go here in actual Django template -->
+                            
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label for="Purchase_Name" class="form-label">Full Name</label>
+                                    <input type="text" class="form-control" id="Purchase_Name" name="user_name" placeholder="Enter your full name" required />
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="email" class="form-label">Email Address</label>
+                                    <input type="email" class="form-control" id="email" name="user_email" placeholder="name@example.com" required />
+                                </div>
+                            </div>
+
+                            <div class="row g-3 mb-3">
+                                <div class="col-md-6">
+                                    <label for="contact" class="form-label">Contact Number</label>
+                                    <input type="tel" class="form-control" id="contact" name="user_contact" placeholder="+977 98XXXXXXXX" required pattern="^\+?\d{7,15}$" />
+                                </div>
+                                <div class="col-md-6">
+                                    <label for="required_unit" class="form-label">Quantity</label>
+                                    <div class="quantity-controls">
+                                        <button type="button" class="qty-btn" onclick="changeQuantity(-1)">−</button>
+                                        <span class="qty-display" id="quantityDisplay">1</span>
+                                        <button type="button" class="qty-btn" onclick="changeQuantity(1)">+</button>
+                                    </div>
+                                    <input type="hidden" id="required_unit" name="product_quantity" value="1" />
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="address" class="form-label">Shipping Address</label>
+                                <textarea class="form-control" id="address" name="user_address" rows="3" placeholder="Enter your full shipping address" required></textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="payment_method" class="form-label">Payment Method</label>
+                                <select class="form-select" id="payment_method" name="payment_method" required>
+                                    <option value="">Select Payment Method</option>
+                                    <option value="cash_on_delivery">Cash on Delivery</option>
+                                    <option value="bank_transfer">Bank Transfer</option>
+                                    <option value="esewa">eSewa</option>
+                                    <option value="khalti">Khalti</option>
+                                </select>
+                            </div>
+
+                            <!-- Total Amount Section -->
+                            <div class="total-section">
+                                <div class="total-row">
+                                    <span class="total-label">Unit Price:</span>
+                                    <span class="total-value" id="unitPrice">Rs. 150,000</span>
+                                </div>
+                                <div class="total-row">
+                                    <span class="total-label">Quantity:</span>
+                                    <span class="total-value" id="totalQuantity">1</span>
+                                </div>
+                                <div class="total-row">
+                                    <span class="total-label">Shipping:</span>
+                                    <span class="total-value" id="shippingCost">Rs. 500</span>
+                                </div>
+                                <div class="total-row">
+                                    <span class="total-label total-final">Total Amount:</span>
+                                    <span class="total-value total-final" id="totalAmount">Rs. 150,500</span>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="btn-confirm">
+                                🛒 Confirm Order
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Product data - in real implementation, this would come from Django template
+        const productData = {
+            name: "iPhone 15 Pro",
+            price: 150000,
+            category: "Electronics",
+            description: "Latest iPhone with Pro camera system and titanium design. Perfect for photography and professional use.",
+            shipping: 500
+        };
+
+        let currentQuantity = 1;
+
+        function openPurchase() {
+            document.getElementById('purchaseOverlay').classList.add('active');
+            updateTotalAmount();
+        }
+
+        function closePurchase() {
+            document.getElementById('purchaseOverlay').classList.remove('active');
+        }
+
+        function changeQuantity(change) {
+            currentQuantity += change;
+            if (currentQuantity < 1) currentQuantity = 1;
+            
+            document.getElementById('quantityDisplay').textContent = currentQuantity;
+            document.getElementById('required_unit').value = currentQuantity;
+            updateTotalAmount();
+        }
+
+        function updateTotalAmount() {
+            const unitPrice = productData.price;
+            const shipping = productData.shipping;
+            const total = (unitPrice * currentQuantity) + shipping;
+
+            document.getElementById('unitPrice').textContent = `Rs. ${unitPrice.toLocaleString()}`;
+            document.getElementById('totalQuantity').textContent = currentQuantity;
+            document.getElementById('shippingCost').textContent = `Rs. ${shipping.toLocaleString()}`;
+            document.getElementById('totalAmount').textContent = `Rs. ${total.toLocaleString()}`;
+        }
+
+        // Bootstrap form validation
+        (() => {
+            'use strict';
+            const forms = document.querySelectorAll('.needs-validation');
+            Array.from(forms).forEach(form => {
+                form.addEventListener('submit', event => {
+                    if (!form.checkValidity()) {
+                        event.preventDefault();
+                        event.stopPropagation();
+                    }
+                    form.classList.add('was-validated');
+                }, false);
+            });
+        })();
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateTotalAmount();
+        });
+    </script>
+</body>
+</html>

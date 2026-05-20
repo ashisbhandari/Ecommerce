@@ -261,5 +261,8 @@ def product(request, id):
 
 def contact(request):
     return render(request,"store/contact_us.html")
+
+def user(request):
+    return render(request,"store/user.html")
 def test(request):
     return render(request,"store/test.html")

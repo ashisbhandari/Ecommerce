@@ -222,3 +222,1007 @@ input:checked + .slider::before {
   </script>
 </body>
 </html>
+
+
+
+
+
+
+<!-- open cart button/ -->
+  <button class="btn btn-primary shadow floating-cart-btn" onclick="openCart()">
+    <i class="fa fa-shopping-cart"></i> View Cart
+  </button>
+  <div class="cart-overlay" id="cartOverlay" onclick="closeCart(event)">
+    <div class="cart-panel" onclick="event.stopPropagation()">
+      <button class="close-btn" onclick="closeCart()"><i class="fa fa-window-close" aria-hidden="true"></i></button>
+      <h3>Your Cart <i class="fa fa-shopping-cart"></i></h3>
+      <div class="cart-item d-flex justify-content-between align-items-center">
+
+        <span style="height:80px; width:80px;"><img src="{% static 'store/logo.png' %}" class="card-img-top img-fluid" alt="Product Image" />Dummy</span>
+        
+        <span class="quantity-controls">
+          <button class="btn btn-info btn-sm" onclick="changecartQuantity(this, -1)">-</button>
+          <span class="quantity-value">1</span>
+          <button class="btn btn-info btn-sm" onclick="changecartQuantity(this, 1)">+</button>
+        </span>
+        <script>
+          function changecartQuantity(btn, delta) {
+            const container = btn.closest('.quantity-controls');
+            const valueSpan = container.querySelector('.quantity-value');
+            let currentValue = parseInt(valueSpan.innerText) || 1;
+            currentValue = Math.max(1, currentValue + delta);
+            valueSpan.innerText = currentValue;
+          }
+        </script>
+
+        <span class="card-price">RS 20</span>
+        <button class="btn btn-primary btn-sm " style="width: 50px;">Buy</button>
+        <button class="btn btn-danger btn-sm"><i class="fa fa-trash" aria-hidden="true"></i></button>
+      </div>
+
+      <!-- Empty Message -->
+      <p class="text-center text-muted mt-3 py-3">Your cart is empty.</p>
+    </div>
+  </div>
+  <script>
+    function openCart() {
+      document.getElementById('cartOverlay').style.display = 'flex';
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCart(event) {
+      document.getElementById('cartOverlay').style.display = 'none';
+      document.body.style.overflow = 'auto';
+    }
+  </script>
+
+
+
+
+
+  <footer class="bg-dark text-white py-5 mt-5 ftr">
+  <div class="container">
+    <div class="row">
+      <h5 class="uppercase">About</h5>
+      <div class="col-md-4 mb-4">
+        <a class="navbar-brand d-flex align-items-center" href="/" style="color: orange;">
+        <img src="{% static 'store/logo.png' %}" alt="Logo" height="50" class="me-2" />
+        ClickToShop
+        </a>        
+        <p>
+          ClickToShop is an eCommerce platform for groceries that provides all the daily-use items you need. We deliver directly from the company to your doorstep in just one click.
+        </p>
+      </div>
+
+      <!-- Useful Links -->
+      <div class="col-md-4 mb-4">
+        <h5 class="uppercase">ClickToShop</h5>
+        <ul>
+          <li>Terms & Conditions</li>
+          <li>Recent Deals</li>
+          <li>Top Products</li>
+        </ul>
+      </div>
+
+      <!-- Contact Info -->
+      <div class="col-md-4 mb-4">
+        <h5 class="uppercase">Contact Us</h5>
+        <ul>
+          <li><i class="fa fa-phone me-2"></i> Customer Care</li>
+          <li><i class="fa fa-facebook-official me-2"></i> Facebook</li>
+          <li><i class="fa fa-instagram me-2"></i> Instagram</li>
+          <li><i class="fa fa-envelope me-2"></i>E-Mail</li>
+        </ul>
+      </div>
+    </div>
+    <hr class="border-light" />
+    <div class="text-center small text-muted">
+      &copy; 2025 ClickToShop. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center" href="/" style="color: orange;">
+      <img src="{% static 'store/logo.png' %}" alt="Logo" height="50" class="me-2" />
+      ClickToShop
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+      aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNavbar">
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+
+        <li class="nav-item me-lg-3">
+            <form class="d-flex" role="search">
+              <div class="input-group">
+                <input class="form-control text-white" type="search" placeholder="Search" aria-label="Search"
+                  style="background-color: #949393; height: 50px;" />
+                <button class="btn btn-outline-light" style="background-color: #949393; height: 50px;" type="submit">
+                  <i class="fa fa-search"></i>
+                </button>
+              </div>
+            </form>
+          </li>
+
+
+        <li class="nav-item">
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Recent Deals</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Help & Support</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#">Contact Us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-warning" href="javascript:void(0);" onclick="openLogin()">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-light " href="/">← Back to Home</a>
+        </li>
+
+
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- ok -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="{% static 'store/logo.png' %}" type="image/x-icon" width="100px">
+  <title>ClickToShop</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+  <style>
+    :root {
+      --primary-color: #6366f1;
+      --primary-dark: #4f46e5;
+      --accent-color: #f59e0b;
+      --success-color: #10b981;
+      --danger-color: #ef4444;
+      --warning-color: #f59e0b;
+      --dark-bg: #0f172a;
+      --card-bg: #1e293b;
+      --border-color: #334155;
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --glassmorphism: rgba(30, 41, 59, 0.8);
+    }
+
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+      min-height: 100vh;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text-primary);
+    }
+
+    .product-card-main {
+      background: var(--glassmorphism);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    }
+
+    .product-card-main:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 350px;
+      object-fit: cover;
+      border-radius: 16px;
+      transition: transform 0.3s ease;
+    }
+
+    .product-image:hover {
+      transform: scale(1.05);
+    }
+
+    .image-wrapper {
+      padding: 20px;
+      background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+      border-radius: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .image-wrapper::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+      transform: translateX(-100%);
+      animation: shimmer 2s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+
+    .btn-custom {
+      padding: 12px 24px;
+      font-weight: 600;
+      border: none;
+      border-radius: 12px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn-custom::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+
+    .btn-custom:hover::before {
+      left: 100%;
+    }
+
+    .btn-cart {
+      background: linear-gradient(45deg, var(--primary-color), var(--primary-dark));
+      color: white;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+    }
+
+    .btn-cart:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(99, 102, 241, 0.4);
+      color: white;
+    }
+
+    .btn-buy {
+      background: linear-gradient(45deg, var(--accent-color), #ea580c);
+      color: white;
+      box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+    }
+
+    .btn-buy:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(245, 158, 11, 0.4);
+      color: white;
+    }
+
+    .quantity-box {
+      display: flex;
+      align-items: center;
+      background: var(--card-bg);
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      padding: 4px;
+      width: fit-content;
+    }
+
+    .quantity-box button {
+      background: var(--primary-color);
+      border: none;
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      transition: all 0.2s ease;
+    }
+
+    .quantity-box button:hover {
+      background: var(--primary-dark);
+      transform: scale(1.1);
+    }
+
+    .quantity-value {
+      padding: 0 20px;
+      font-weight: 600;
+      font-size: 18px;
+      min-width: 60px;
+      text-align: center;
+    }
+
+    .share-buttons a {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 5px;
+      transition: all 0.3s ease;
+      background: var(--glassmorphism);
+      border: 1px solid var(--border-color);
+      color: var(--text-primary);
+    }
+
+    .share-buttons a:hover {
+      transform: translateY(-2px) scale(1.1);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+    }
+
+    .share-buttons a.facebook:hover { background: #1877f2; color: white; }
+    .share-buttons a.twitter:hover { background: #1da1f2; color: white; }
+    .share-buttons a.instagram:hover { background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888); color: white; }
+
+    .product-card {
+      background: var(--glassmorphism);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--border-color);
+      border-radius: 16px;
+      transition: all 0.3s ease;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .product-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+      border-color: var(--primary-color);
+    }
+
+    .product-card img {
+      transition: transform 0.3s ease;
+    }
+
+    .product-card:hover img {
+      transform: scale(1.1);
+    }
+
+    /* Purchase Modal Styles */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 1050;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .purchase-container {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.9);
+      width: 95%;
+      max-width: 1200px;
+      max-height: 95vh;
+      overflow-y: auto;
+      background: var(--glassmorphism);
+      backdrop-filter: blur(20px);
+      border: 1px solid var(--border-color);
+      border-radius: 24px;
+      transition: all 0.3s ease;
+      box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+    }
+
+    .overlay.active .purchase-container {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      border: none;
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--danger-color);
+      border-radius: 50%;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 10;
+    }
+
+    .close-btn:hover {
+      background: var(--danger-color);
+      color: white;
+      transform: scale(1.1);
+    }
+
+    .purchase-image {
+      width: 100%;
+      height: 300px;
+      object-fit: cover;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    }
+
+    .form-control {
+      background: rgba(30, 41, 59, 0.5);
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      color: var(--text-primary);
+      padding: 12px 16px;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus {
+      background: rgba(30, 41, 59, 0.8);
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+      color: var(--text-primary);
+    }
+
+    .form-control::placeholder {
+      color: var(--text-secondary);
+    }
+
+    .form-label {
+      color: var(--text-primary);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .payment-methods {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .payment-method {
+      background: var(--card-bg);
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      padding: 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+
+    .payment-method:hover {
+      border-color: var(--primary-color);
+      background: rgba(99, 102, 241, 0.1);
+    }
+
+    .payment-method input[type="radio"] {
+      position: absolute;
+      opacity: 0;
+    }
+
+    .payment-method input[type="radio"]:checked + .payment-content {
+      color: var(--primary-color);
+    }
+
+    .payment-method input[type="radio"]:checked ~ .payment-method {
+      border-color: var(--primary-color);
+      background: rgba(99, 102, 241, 0.1);
+    }
+
+    .status-badge {
+      padding: 6px 12px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .status-available {
+      background: rgba(16, 185, 129, 0.2);
+      color: var(--success-color);
+      border: 1px solid var(--success-color);
+    }
+
+    .status-discontinued {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--danger-color);
+      border: 1px solid var(--danger-color);
+    }
+
+    .status-out-of-stock {
+      background: rgba(245, 158, 11, 0.2);
+      color: var(--warning-color);
+      border: 1px solid var(--warning-color);
+    }
+
+    /* Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--dark-bg);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--primary-color);
+      border-radius: 4px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--primary-dark);
+    }
+  </style>
+</head>
+<body>
+  <div class="container py-5">
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <div class="product-card-main">
+          <div class="row g-0">
+            
+            <!-- LEFT: Product Image -->
+            <div class="col-lg-4 col-md-5 p-4">
+              <div class="image-wrapper">
+                {% if product.image %}
+                  <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                {% else %}
+                  <img src="{% static 'default.jpg' %}" alt="No image" class="product-image">
+                {% endif %}
+              </div>
+            </div>
+
+            <!-- MIDDLE: Main Product Info -->
+            <div class="col-lg-5 col-md-4 p-4">
+              <div class="h-100 d-flex flex-column justify-content-between">
+                <div>
+                  <h1 class="fw-bold mb-3 text-gradient">{{ product.name }}</h1>
+                  <div class="d-flex align-items-center mb-4">
+                    <h2 class="text-warning mb-0 me-3">
+                      <i class="fas fa-rupee-sign"></i> {{ product.price }}
+                    </h2>
+                    {% if product.quantity > 0 and product.product_status != "Discontinued" %}
+                      <span class="status-badge status-available">
+                        <i class="fas fa-check-circle me-1"></i>In Stock
+                      </span>
+                    {% elif product.product_status == "Discontinued" %}
+                      <span class="status-badge status-discontinued">
+                        <i class="fas fa-times-circle me-1"></i>Discontinued
+                      </span>
+                    {% elif product.quantity == 0 %}
+                      <span class="status-badge status-out-of-stock">
+                        <i class="fas fa-exclamation-circle me-1"></i>Out of Stock
+                      </span>
+                    {% endif %}
+                  </div>
+
+                  <div class="mb-4">
+                    <h5 class="fw-semibold mb-2 text-secondary">Description</h5>
+                    <p class="text-light">{{ product.description }}</p>
+                  </div>
+
+                  <div class="mb-4">
+                    <label class="fw-semibold mb-2 text-secondary">Quantity</label>
+                    <div class="quantity-box">
+                      <button type="button" onclick="changeQuantity(this, -1)">
+                        <i class="fas fa-minus"></i>
+                      </button>
+                      <span class="quantity-value">1</span>
+                      <button type="button" onclick="changeQuantity(this, 1)">
+                        <i class="fas fa-plus"></i>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="d-flex flex-column flex-sm-row gap-3">
+                  <a href="#" class="btn-custom btn-cart flex-fill text-center">
+                    <i class="fas fa-shopping-cart"></i>
+                    Add to Cart
+                  </a>
+                  {% if product.quantity > 0 and product.product_status != "Discontinued" %}
+                    <a href="#" class="btn-custom btn-buy flex-fill text-center" onclick="openPurchase()">
+                      <i class="fas fa-bolt"></i>
+                      Buy Now
+                    </a>
+                  {% elif product.product_status == "Discontinued" %}
+                    <a href="#" class="btn btn-danger btn-custom flex-fill text-center disabled">
+                      <i class="fas fa-ban"></i>
+                      Discontinued
+                    </a>
+                  {% elif product.quantity == 0 %}
+                    <a href="#" class="btn btn-warning btn-custom flex-fill text-center disabled">
+                      <i class="fas fa-exclamation-triangle"></i>
+                      Out of Stock
+                    </a>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+
+            <!-- RIGHT: Additional Info -->
+            <div class="col-lg-3 col-md-3 p-4 border-start border-secondary">
+              <div class="h-100 d-flex flex-column justify-content-between">
+                <div>
+                  <div class="mb-4">
+                    <h6 class="fw-semibold mb-2 text-warning">
+                      <i class="fas fa-box me-2"></i>Availability
+                    </h6>
+                    {% if product.quantity > 0 and product.product_status != "Discontinued" %}
+                      <p class="mb-0 text-success fw-semibold">
+                        {{ product.quantity }} units available
+                      </p>
+                    {% elif product.product_status == "Discontinued" %}
+                      <p class="mb-0 text-danger fw-semibold">Discontinued</p>
+                    {% elif product.quantity == 0 %}
+                      <p class="mb-0 text-warning fw-semibold">Out of Stock</p>
+                    {% endif %}
+                  </div>
+
+                  {% if product.category %}
+                  <div class="mb-4">
+                    <h6 class="fw-semibold mb-2 text-warning">
+                      <i class="fas fa-tag me-2"></i>Category
+                    </h6>
+                    <p class="mb-0 text-light">{{ product.category }}</p>
+                  </div>
+                  {% endif %}
+
+                  <div class="mb-4">
+                    <h6 class="fw-semibold mb-2 text-warning">
+                      <i class="fas fa-info-circle me-2"></i>Status
+                    </h6>
+                    <p class="mb-0 text-light">{{ product.product_status }}</p>
+                  </div>
+                </div>
+
+                <div class="share-buttons">
+                  <h6 class="text-warning mb-3">
+                    <i class="fas fa-share-alt me-2"></i>Share Product
+                  </h6>
+                  <div class="d-flex justify-content-start">
+                    <a href="#" class="facebook" onclick="shareOnFacebook(event)">
+                      <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="twitter" onclick="shareOnTwitter(event)">
+                      <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="instagram" onclick="shareOnInstagram(event)">
+                      <i class="fab fa-instagram"></i>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Related Products Section -->
+  <div class="container py-5">
+    <div class="text-center mb-5">
+      <h2 class="fw-bold text-white mb-3">You Might Also Like</h2>
+      <div class="w-25 mx-auto" style="height: 3px; background: linear-gradient(90deg, var(--primary-color), var(--accent-color));"></div>
+    </div>
+    <div class="row g-4">
+      {% for product in products %}
+      <div class="col-xl-3 col-lg-4 col-md-6">
+        <div class="product-card h-100" data-product-id="{{ product.id }}">
+          <div class="position-relative overflow-hidden">
+            {% if product.image %}
+              <img src="{{ product.image.url }}" class="card-img-top" alt="{{ product.name }}" style="height: 250px; object-fit: cover;">
+            {% else %}
+              <img src="{% static 'default.jpg' %}" class="card-img-top" alt="No image" style="height: 250px; object-fit: cover;">
+            {% endif %}
+            <div class="position-absolute top-0 end-0 m-3">
+              <span class="badge bg-primary">
+                <i class="fas fa-rupee-sign"></i> {{ product.price }}
+              </span>
+            </div>
+          </div>
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title text-white fw-semibold mb-2">{{ product.name }}</h5>
+            <div class="mt-auto">
+              <div class="d-flex justify-content-between align-items-center">
+                <small class="text-muted">Click to view</small>
+                <i class="fas fa-arrow-right text-primary"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Purchase Confirmation Modal -->
+  <div class="overlay" id="purchaseOverlay">  
+    <div class="purchase-container">
+      <button class="close-btn" onclick="closePurchase()">
+        <i class="fas fa-times"></i>
+      </button>
+      
+      <div class="p-4">
+        <div class="text-center mb-4">
+          <h2 class="fw-bold text-warning mb-2">
+            <i class="fas fa-shopping-bag me-2"></i>Purchase Confirmation
+          </h2>
+          <p class="text-secondary mb-0">Complete your order for <strong class="text-white">{{ product.name }}</strong></p>
+        </div>
+
+        <form method="post" action="{% url 'product' product.id %}" class="needs-validation" novalidate>
+          {% csrf_token %}
+          <input type="hidden" name="form_type" value="Purchase" />
+          <input type="hidden" name="product_price" value="{{ product.price }}" />
+          <input type="hidden" name="product_description" value="{{ product.description }}" />
+          <input type="hidden" name="product_category" value="{{ product.category }}" />
+          <input type="hidden" name="product_name" value="{{ product.name }}" />
+
+          <div class="row g-4">
+            
+            <!-- LEFT: Product Image -->
+            <div class="col-lg-4">
+              <div class="sticky-top" style="top: 20px;">
+                <div class="text-center mb-4">
+                  <h6 class="text-white fw-semibold">{{ product.name }}                       <i class="fas fa-rupee-sign text-warning fw-bold fs-5"> {{ product.price }}</i> 
+                    
+                  </h6>
+                  
+                  {% if product.image %}
+                    <img src="{{ product.image.url }}" alt="{{ product.name }}" class="purchase-image mb-3">
+                  {% else %}
+                    <img src="{% static 'default.jpg' %}" alt="No image" class="purchase-image mb-3">
+                  {% endif %}
+                  <div class="mb-4">
+                <label for="product_details_text" class="form-label">
+                  <i class="fas fa-info-circle me-2"></i>Product Summary
+                </label>
+                <textarea class="form-control" id="product_details_text" rows="4" readonly style="background-color: rgba(30, 41, 59, 0.5); font-size: 13px;">Name: {{ product.name }}
+                  Price: Rs. {{ product.price }}
+                  Category: {{ product.category }}
+                  Details: {{ product.description }}
+                </textarea>
+              </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- CENTER: User Details -->
+            <div class="col-lg-4">
+              <div class="mb-3">
+                <label for="Purchase_Name" class="form-label">
+                  <i class="fas fa-user me-2"></i>Full Name
+                </label>
+                <input type="text" class="form-control" id="Purchase_Name" name="user_name" placeholder="Enter your full name" required />
+                <div class="invalid-feedback">Please provide your full name.</div>
+              </div>
+
+              <div class="mb-3">
+                <label for="email" class="form-label">
+                  <i class="fas fa-envelope me-2"></i>Email Address
+                </label>
+                <input type="email" class="form-control" id="email" name="user_email" placeholder="name@example.com" required />
+                <div class="invalid-feedback">Please provide a valid email address.</div>
+              </div>
+
+              <div class="mb-3">
+                <label for="contact" class="form-label">
+                  <i class="fas fa-phone me-2"></i>Contact Number
+                </label>
+                <input type="tel" class="form-control" id="contact" name="user_contact" placeholder="+977 98XXXXXXXX" required pattern="^\+?\d{7,15}$" />
+                <div class="invalid-feedback">Please provide a valid contact number.</div>
+              </div>
+
+              <div class="mb-4">
+                <label for="address" class="form-label">
+                  <i class="fas fa-map-marker-alt me-2"></i>Shipping Address
+                </label>
+                <textarea class="form-control" id="address" name="user_address" rows="3" placeholder="Enter your complete shipping address" required></textarea>
+                <div class="invalid-feedback">Please provide your shipping address.</div>
+              </div>
+            </div>
+
+            <!-- RIGHT: Product Details & Payment -->
+            <div class="col-lg-4">
+              <div class="row g-3 mb-4">
+                <div class="col-6">
+                  <label for="required_unit" class="form-label">
+                    <i class="fas fa-boxes me-2"></i>Quantity
+                  </label>
+                  <input type="number" min="1" class="form-control" id="required_unit" name="product_quantity" required placeholder="1" />
+                  <div class="invalid-feedback">Please specify quantity.</div>
+                </div>
+                <div class="col-6">
+                  <label for="total_amount" class="form-label">
+                    <i class="fas fa-calculator me-2"></i>Total (Rs.)
+                  </label>
+                  <input type="text" class="form-control" id="total_amount" name="total_amount" readonly placeholder="0.00" style="background: rgba(16, 185, 129, 0.1); border-color: var(--success-color);" />
+                </div>
+              </div>
+
+              <div class="mb-4">
+                <label class="form-label">
+                  <i class="fas fa-credit-card me-2"></i>Payment Method
+                </label>
+                <div class="payment-methods">
+                  <div class="payment-method">
+                    <input type="radio" id="cod" name="payment_method" value="cod" checked>
+                    <div class="payment-content">
+                      <i class="fas fa-truck text-warning mb-2 d-block"></i>
+                      <small>Cash on Delivery</small>
+                    </div>
+                  </div>
+                  <div class="payment-method">
+                    <input type="radio" id="card" name="payment_method" value="card">
+                    <div class="payment-content">
+                      <i class="fas fa-credit-card text-primary mb-2 d-block"></i>
+                      <small>Credit Card</small>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <button type="submit" class="btn btn-warning w-100 fw-semibold py-3 fs-5 btn-custom">
+                <i class="fas fa-check-circle me-2"></i>
+                Confirm Order
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- All Scripts -->
+  <script>
+    // Share Functions
+    function getCurrentUrl() {
+      return window.location.href;
+    }
+
+    function shareOnFacebook(e) {
+      e.preventDefault();
+      const url = encodeURIComponent(getCurrentUrl());
+      navigator.clipboard.writeText(getCurrentUrl()).then(() => {
+        alert("URL copied to clipboard! You can share it on Facebook.");
+        const confirmed = confirm("Do you want to share this on Facebook?");
+        if (confirmed) {
+          window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}`, '_blank');
+        }
+      });
+    }
+  </script>
+  <script>
+    function shareOnTwitter(e) {
+      e.preventDefault();
+      const url = encodeURIComponent(getCurrentUrl());
+      navigator.clipboard.writeText(getCurrentUrl()).then(() => {
+        alert("URL copied to clipboard! You can share it on Twitter.");
+        const confirmed = confirm("Do you want to share this on Twitter?");
+        if (confirmed) {
+          window.open(`https://twitter.com/intent/tweet?url=${url}`, '_blank');
+        }
+      });
+    }
+    function shareOnInstagram(e) {
+      e.preventDefault();
+      const url = encodeURIComponent(getCurrentUrl());
+      navigator.clipboard.writeText(getCurrentUrl()).then(() => {
+        alert("URL copied to clipboard! You can share it on Instagram.");
+        const confirmed = confirm("Do you want to share this on Instagram?");
+        if (confirmed) {
+          window.open(`https://www.instagram.com/?url=${url}`, '_blank');
+        }
+      });
+    }
+  </script>
+  <script>
+    function changeQuantity(button, delta) {
+      const quantityValue = button.parentElement.querySelector('.quantity-value');
+      let currentQuantity = parseInt(quantityValue.textContent);
+      currentQuantity += delta;
+      if (currentQuantity < 1) currentQuantity = 1;
+      quantityValue.textContent = currentQuantity;
+    }
+
+    function openPurchase() {
+      document.getElementById('purchaseOverlay').classList.add('active');
+    }
+
+    function closePurchase() {
+      document.getElementById('purchaseOverlay').classList.remove('active');
+    }
+
+    // Form Validation
+    (function () {
+      'use strict';
+      window.addEventListener('load', function () {
+        const forms = document.getElementsByClassName('needs-validation');
+        Array.prototype.filter.call(forms, function (form) {
+          form.addEventListener('submit', function (event) {
+            if (form.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      }, false);
+    })();
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
+<script>
+    // Update total amount on quantity change
+    document.getElementById('required_unit').addEventListener('input', function() {
+      const quantity = parseInt(this.value) || 1;
+      const price = parseFloat(document.querySelector('.btn-cart .fas').textContent.replace('Rs.', '')) || 0;
+      const totalAmount = quantity * price;
+      document.getElementById('total_amount').value = totalAmount.toFixed(2);
+    });
+  </script>
+<script>
+    // Update total amount on payment method change
+    document.querySelectorAll('input[name="payment_method"]').forEach(function (radio) {
+      radio.addEventListener('change', function () {
+        const quantity = parseInt(document.getElementById('required_unit').value) || 1;
+        const price = parseFloat(document.querySelector('.btn-cart .fas').textContent.replace('Rs.', '')) || 0;
+        const totalAmount = quantity * price;
+        document.getElementById('total_amount').value = totalAmount.toFixed(2);
+      });
+    });
+    // Update total amount on form submission
+    document.querySelector('.needs-validation').addEventListener('submit', function (event) {
+      event.preventDefault();
+      const quantity = parseInt(document.getElementById('required_unit').value) || 1;
+      const price = parseFloat(document.querySelector('.btn-cart .fas').textContent.replace('Rs.', '')) || 0;
+      const totalAmount = quantity * price;
+      document.getElementById('total_amount').value = totalAmount.toFixed(2);
+    });
+  </script>
+<script>
+  // Update total amount on payment method change
+  document.querySelectorAll('input[name="payment_method"]').forEach(function (radio) {
+    radio.addEventListener('change', function () {
+      const quantity = parseInt(document.getElementById('required_unit').value) || 1;
+      const price = parseFloat(document.querySelector('.btn-cart .fas').textContent.replace('Rs.', '')) || 0;
+      const totalAmount = quantity * price;
+      document.getElementById('total_amount').value = totalAmount.toFixed(2);
+    });
+  });
+  // Update total amount on quantity change
+  document.getElementById('required_unit').addEventListener('input', function() {
+
+    const quantity = parseInt(this.value) || 1;
+    const price = parseFloat(document.querySelector('.btn-cart .fas').textContent.replace('Rs.', '')) || 0;
+    const totalAmount = quantity * price;
+    document.getElementById('total_amount').value = totalAmount.toFixed(2);
+  });
+</script>

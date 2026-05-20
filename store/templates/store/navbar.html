@@ -9,37 +9,48 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
+  <style>
+    .navbar-nav .nav-link {
+  transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover {
+  color: orange !important;
+  transform: scale(1.05);
+}
+
+  </style>
 
 <!-- Navbar Start -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top shadow-sm">
   <div class="container">
-    <a class="navbar-brand d-flex align-items-center" href="/" style="color: orange;">
-      <img src="{% static 'store/logo.png' %}" alt="Logo" height="50" class="me-2" />
+    <a class="navbar-brand d-flex align-items-center fw-bold text-warning" href="/">
+      <img src="{% static 'store/logo.png' %}" alt="ClickToShop Logo" height="45" class="me-2" />
       ClickToShop
     </a>
 
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+    <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
       aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="collapse navbar-collapse" id="mainNavbar">
-      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
-
-        <li class="nav-item me-lg-3">
-            <form class="d-flex" role="search">
-              <div class="input-group">
-                <input class="form-control text-white" type="search" placeholder="Search" aria-label="Search"
-                  style="background-color: #949393; height: 50px;" />
-                <button class="btn btn-outline-light" style="background-color: #949393; height: 50px;" type="submit">
-                  <i class="fa fa-search"></i>
-                </button>
-              </div>
-            </form>
-          </li>
-
-
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-lg-center gap-lg-3">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/">Home</a>
+          <form class="d-flex" role="search">
+            <div class="input-group">
+              <input class="form-control text-white bg-secondary border-0" type="search" placeholder="Search..."
+                aria-label="Search" style="height: 45px;" />
+              <button class="btn btn-outline-light border-0 bg-secondary" type="submit" style="height: 45px;">
+                <i class="fa fa-search"></i>
+              </button>
+            </div>
+          </form>
+        </li>
+
+        <!-- Nav Links -->
+        <li class="nav-item">
+          <a class="nav-link active" href="/">Home</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Recent Deals</a>
@@ -48,15 +59,16 @@
           <a class="nav-link" href="#">Help & Support</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link"aria-current="page" href="/contact">Contact Us</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-warning" href="javascript:void(0);" onclick="openLogin()">Login</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link text-warning" href="javascript:void(0);" onclick="openSignup()">Sign Up</a>
+          <a class="nav-link" href="/contact">Contact Us</a>
         </li>
 
+        <!-- Auth Buttons -->
+        <li class="nav-item">
+          <a class="nav-link text-warning fw-semibold" href="javascript:void(0);" onclick="openLogin()">Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link text-warning fw-semibold" href="javascript:void(0);" onclick="openSignup()">Sign Up</a>
+        </li>
 
       </ul>
     </div>
